@@ -4,7 +4,7 @@ import java.util.List;
 
 /**Luokka kertoo kuka ohjelmaa k‰ytt‰‰
  * @author Lepplaju
- * @version 8.3.2021
+ * @version 25.3.2021
  *
  */
 public class Kayttaja {

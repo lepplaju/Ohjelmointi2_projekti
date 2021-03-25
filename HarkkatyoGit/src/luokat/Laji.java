@@ -44,6 +44,13 @@ public class Laji {
         this.lajiId = seuraavaNro++;
     }
     
+    /**
+     * T‰ytt‰‰ lajin nimen - oikeasti k‰ytt‰j‰n pit‰‰ antaa itse
+     */
+    public void taytaTiedot() {
+        this.laji = "Lajin nimi";
+    }
+    
     @Override
     public String toString() {
         return this.laji;

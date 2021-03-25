@@ -37,7 +37,7 @@ import java.util.ResourceBundle;
 public class PaivakirjaGUIController implements Initializable{
       
     @FXML private TextField hakuehto;
-    @FXML private ComboBoxChooser<String> cbKentat;
+    @FXML private ComboBoxChooser<Laji> cbLajit;
     @FXML private Label labelVirhe;
     @FXML private ScrollPane panelTiedot;
     @FXML private ListChooser<Pvm> chooserPvm;
@@ -48,7 +48,7 @@ public class PaivakirjaGUIController implements Initializable{
     }
 
     @FXML private void handleHakuehto() {
-        String hakukentta = cbKentat.getSelectedText();
+        String hakukentta = cbLajit.getSelectedText();
         String ehto = hakuehto.getText(); 
         if ( ehto.isEmpty() )
             naytaVirhe(null);
@@ -91,6 +91,11 @@ public class PaivakirjaGUIController implements Initializable{
     @FXML
     void HandleUusiUrheilu(ActionEvent event) {
         uusiUrheilu();
+    }
+    
+    @FXML
+    void HandleUusiLaji(ActionEvent event) {
+        uusiLaji();
     }
     
     
@@ -167,6 +172,22 @@ public class PaivakirjaGUIController implements Initializable{
         }
         hae(uusi.getTunnusNro());
     }  
+    
+    /**
+     * Lis‰‰ uuden lajin
+     */
+    public void uusiLaji() {
+        Laji uusi = new Laji();
+        uusi.rekisteroi();
+        uusi.taytaTiedot();       
+        try {
+            kayttaja.lisaa(uusi);
+        } catch (Exception e) {
+            Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
+            return;
+        }
+        cbLajit.add(uusi);
+    }
     
     /** 
      * Tekee uuden tyhj‰n harrastuksen editointia varten 

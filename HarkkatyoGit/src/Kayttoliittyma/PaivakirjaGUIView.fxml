@@ -28,7 +28,7 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#HandleUusiKirjaus" text="Uusi Kirjaus" />
                   <MenuItem mnemonicParsing="false" onAction="#UusiKentta" text="Uusi Kenttä" />
-                  <MenuItem mnemonicParsing="false" onAction="#HandleUusiUrheilu" text="Uusi Laji" />
+                  <MenuItem mnemonicParsing="false" onAction="#HandleUusiLaji" text="Uusi Laji" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
@@ -75,7 +75,7 @@
             <ScrollPane fx:id="panelTiedot" prefHeight="200.0" prefWidth="478.0" />
             <Button mnemonicParsing="false" onAction="#HandleUusiKirjaus" text="Lisaa Pvm" />
             <TextArea prefHeight="200.0" prefWidth="135.0" />
-            <ComboBoxChooser fx:id="cbKentat" />
+            <ComboBoxChooser fx:id="cbLajit" />
             <Button mnemonicParsing="false" onAction="#HandleUusiUrheilu" text="Lisää Urheilu" />
          </children>
       </HBox>
