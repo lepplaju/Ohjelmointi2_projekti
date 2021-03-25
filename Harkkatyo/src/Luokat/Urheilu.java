@@ -1,52 +1,104 @@
-package Luokat;
+package luokat;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import static luokat.Laji.rand;
 
 /**
- * Harjoitustyˆn Urheilu-luokka aktiviteetin alalaji
- * @author Pekka
- * @version 25.2.2021
+ * @author Lepplaju
+ * @version 9.3.2021
  *
  */
 public class Urheilu {
-
-    private String Pvm;
-    private String Klo;
     
-    private String Laji; // Urheilu // J‰‰kiekko
-    private String Suoritusaika;
-    private double Intensity;
-    private double Tyytyv‰isyys;
+    private static int seuraavaNro =1;
+    private String klo;
+    private int pvmNro;
+    private int tunnusNro;
+    private int lajiId=1;
+    private String suoritusaika;
+    private double intensity;
+    private double tyytyvaisyys;
+    private String muutaLisattavaa;
     
-    
-    public void tulosta(PrintStream out) {
-        out.println(Pvm + " " + Klo + " " + Laji  + " " + Suoritusaika  + " " +
-    Intensity  + " " + Tyytyv‰isyys);
+    /**
+     * Urheilun alustus
+     */
+    public Urheilu() {
+        //  
     }
     
+    /**Luo uuden urheilun
+     * @param paivaid mihin p‰iv‰m‰‰r‰n id:seen sidottu
+     */
+    public Urheilu(int paivaid) {
+        this.pvmNro = paivaid;
+    }
+    
+    /**
+     * T‰ytt‰‰ tiedot Urheiluun
+     * @param paivaid mink‰ p‰iv‰m‰‰r‰n tietoja
+     */
+    public void taytaTiedot(int paivaid) {
+        this.klo = rand(6,21) + ";" + String.format("%02d",rand(0,59));
+        this.pvmNro = paivaid;
+        this.lajiId = rand(1,8);
+        this.suoritusaika = "suoritusaika: " + rand(0,2) +":" + rand(30,59);
+        this.intensity = rand(5, 10);
+        this.tyytyvaisyys = rand(5, 10);
+        this.muutaLisattavaa ="*muuta lis‰tt‰v‰‰";
+    }
+    
+    /**
+     * antaa urheilulle tunnusnumeron
+     */
+    public void rekisteroi() {
+        this.tunnusNro = seuraavaNro++;  
+    }
+    
+    /**tulostus
+     * @param os tietovirta
+     */
     public void tulosta(OutputStream os) {
         tulosta(new PrintStream(os));
     }
     
-    public void taytatiedot() {
-        Pvm = "26.2.2021";
-        Klo = "9:35";
-        Laji = "J‰‰kiekko";
-        Suoritusaika = "2h";
-        Intensity = 7;
-        Tyytyv‰isyys = 7;
-        
+    /**Tulostetaan urheilun tiedot
+     * @param out tietovirta johon tulostetaan
+     * TODO: Laji pit‰‰ saada tulostukseen ja Kellonaika!
+     */
+    public void tulosta(PrintStream out) {
+        out.println("Lajin id: " + this.lajiId + ", kelloanika: " + this.klo + ", "+ " treenin kesto: "+this.suoritusaika+", " +"treenin intensiteetti: "
+    + this.intensity +", " +  "treeniin tyytyv‰isyys: " + this.tyytyvaisyys+", "  +this.muutaLisattavaa);
+    }
+    
+    @Override
+    public String toString() {
+        return /*getLaji(this.laji) +", " + */this.suoritusaika+", " +this.intensity +", " +  
+                this.tyytyvaisyys+", "  +this.muutaLisattavaa;
+    }
+
+    /**
+     * @return palauttaa lajin id:n
+     */
+    public int getTunnusNro() {
+          return this.tunnusNro;
     }
     
     /**
-     * @param args ei k‰ytˆss‰
+     * @return palauttaa mihin p‰iv‰m‰‰r‰n Id-numeroon t‰m‰ urheilu on liitetty
      */
-    public static void main(String[] args) {
-        Urheilu jaakiekko1 = new Urheilu();
-        jaakiekko1.taytatiedot();
-        jaakiekko1.tulosta(System.out);
-
+    public int getPvmNro() {
+        return this.pvmNro;
     }
+          
+    /**
+     * @return palauttaa Urheiluun liittyv‰n lajin Id:n
+     */
+    public int getLajiId() {
+        return this.lajiId;
+    }
+        
+
 
 }

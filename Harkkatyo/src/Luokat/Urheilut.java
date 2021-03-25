@@ -1,29 +1,45 @@
-package Luokat;
+package luokat;
 
-public class Urheilut {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
-    private static final int MAX_ALKIOTA=20;
-    private int seuraava;
-    private Urheilu[] alkiot;
+/**Urheilut - luokka, joka pit‰‰ yll‰ Urheilu-luokan taulukkoa
+ * @author Lepplaju
+ * @version 9.3.2021
+ *
+ */
+public class Urheilut implements Iterable<Urheilu> {
+
+    private Collection<Urheilu> alkiot = new ArrayList<Urheilu>();
     
-    public Urheilut() {
-        alkiot = new Urheilu[MAX_ALKIOTA];
+    
+    /**antaa kaikki urheilut tietylt‰ p‰iv‰m‰‰r‰lt‰
+     * @param pvmTunnusNro p‰iv‰m‰‰r‰n tunnusnumero
+     * @return kaikki tietyn p‰iv‰n urheilusuoritukset
+     */
+    public List<Urheilu> annaUrheilut(int pvmTunnusNro){
+        List<Urheilu> loydetyt = new ArrayList<Urheilu>();
+                 for (Urheilu urh : alkiot)
+                     if (urh.getPvmNro() == pvmTunnusNro) loydetyt.add(urh);
+                 return loydetyt;
+             
     }
-    
-    public void lisaa(Urheilu urheilu)  {
-        if ( seuraava >= alkiot.length) return;
-        this.alkiot[this.seuraava] = urheilu;
-        seuraava++;
+
+
+    @Override
+    public Iterator<Urheilu> iterator() {
+        return alkiot.iterator();
     }
 
-    
-    public static void main(String[] args) {
-        Urheilut urheilut = new Urheilut();
-        Urheilu jaakiekko1 = new Urheilu();
-        jaakiekko1.taytatiedot();
-        urheilut.lisaa(jaakiekko1);
 
-
+    /**lis‰t‰‰n listaan uusi urheilu
+     * @param urh urheilun tiedot
+     */
+    public void lisaa(Urheilu urh) {
+        alkiot.add(urh);
+        
     }
     
 }

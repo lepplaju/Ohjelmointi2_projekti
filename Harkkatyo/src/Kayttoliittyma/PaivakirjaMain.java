@@ -9,20 +9,21 @@ import javafx.fxml.FXMLLoader;
 
 /**
  * @author Pekka
- * @version 30.1.2021
+ * @version 9.3.2021
  *
  */
-public class KayttoliittymaHTMain extends Application {
+public class PaivakirjaMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader ldr = new FXMLLoader(getClass().getResource("KayttoliittymaHTGUIView.fxml"));
+            FXMLLoader ldr = new FXMLLoader(getClass().getResource("PaivakirjaGUIView.fxml"));
             final Pane root = ldr.load();
-            //final KayttoliittymaHTGUIController kayttoliittymahtCtrl = (KayttoliittymaHTGUIController) ldr.getController();
+            //final PaivakirjaGUIController paivakirjaCtrl = (PaivakirjaGUIController) ldr.getController();
+            
             Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("kayttoliittymaht.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("paivakirja.css").toExternalForm());
             primaryStage.setScene(scene);
-            primaryStage.setTitle("KayttoliittymaHT");
+            primaryStage.setTitle("Paivakirja");
             primaryStage.show();
         } catch(Exception e) {
             e.printStackTrace();
