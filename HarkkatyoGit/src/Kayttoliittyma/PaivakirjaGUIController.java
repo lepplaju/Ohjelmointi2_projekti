@@ -152,7 +152,7 @@ public class PaivakirjaGUIController implements Initializable{
         for (int i = 0; i < kayttaja.getEriPaivat(); i++) {
             Pvm pvm = kayttaja.annaPvm(i);
             if (pvm.getTunnusNro() == pvmId) index = i;
-            chooserPvm.add("aa", pvm);
+            chooserPvm.add(pvm.toString(), pvm);
         }
         chooserPvm.setSelectedIndex(index); // tästä tulee muutosviesti joka näyttää jäsenen
     }

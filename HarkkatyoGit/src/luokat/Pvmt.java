@@ -62,24 +62,36 @@ public class Pvmt implements Iterable<Pvm>{
      * @param args not in use
      */
     public static void main(String[] args) {
+        Pvmt testipaivat = new Pvmt();
         
-        Pvmt peeveet = new Pvmt();
+        Pvm nyt = new Pvm();
         Pvm tammikuu = new Pvm();
-        tammikuu.tayta(1,1,2021);
-        Pvm helmikuu = new Pvm(1,2,2021);
-        Pvm maaliskuu = new Pvm(1,3,2021);
-
-        peeveet.lisaa(tammikuu);
-        peeveet.lisaa(helmikuu);
-        peeveet.lisaa(maaliskuu);
+        Pvm helmikuu = new Pvm();
         
-     //   List<Pvm> paivamaarat2 = peeveet.annaPvt();
-     //   
-     //   for (Pvm peevee : paivamaarat2) {
-     //       System.out.println(peevee);
-     //   }
+        nyt.rekisteroi();
+        nyt.taytaTiedot();
+        tammikuu.rekisteroi();
+        helmikuu.rekisteroi();
+        helmikuu.taytaTiedot();
+        tammikuu.taytaTiedot();
+        
+        try {
+            testipaivat.lisaa(nyt);
+            testipaivat.lisaa(tammikuu);
+            testipaivat.lisaa(helmikuu);
+            System.out.println("pvm-luokan testi ========================================");
+            
+            for (int i = 1; i <= testipaivat.getPvmLkm(); i++) {
+                Pvm pvm = testipaivat.annaPvm(i);
+                System.out.println("Pvm Id: " + i);
+                pvm.tulosta(System.out);
+            } 
+            
+        } catch (Exception e) {
+            System.out.println("Virhe" + e.getMessage());
+        }
+        
+        //testipaivat.tallenna();
+        }
 
     }
-
-
-}

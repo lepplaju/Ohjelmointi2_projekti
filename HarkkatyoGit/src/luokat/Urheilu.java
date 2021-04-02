@@ -43,7 +43,7 @@ public class Urheilu {
         this.klo = rand(6,21) + ";" + String.format("%02d",rand(0,59));
         this.pvmNro = paivaid;
         this.lajiId = rand(1,8);
-        this.suoritusaika = "suoritusaika: " + rand(0,2) +":" + rand(30,59);
+        this.suoritusaika = rand(0,2) +":" + rand(30,59);
         this.intensity = rand(5, 10);
         this.tyytyvaisyys = rand(5, 10);
         this.muutaLisattavaa ="*muuta lis‰tt‰v‰‰";
