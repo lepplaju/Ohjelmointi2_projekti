@@ -4,6 +4,8 @@ import static luokat.Laji.rand;
 import java.io.PrintStream;
 import java.util.Calendar;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 /** Kertoo p‰iv‰m‰‰r‰n, jolloin suoritusta on tehty ja sitoo suorituksen annetuun p‰iv‰m‰‰r‰‰n
  * @author Lepplaju
  * @version 15.3.2021
@@ -17,13 +19,31 @@ public class Pvm {
     private int vv;
     
     /**
+     * @return palauttaa p‰iv‰n
+     */
+    public int getPv() {
+        return this.pv;
+    }
+    
+    /**
+     * @return palauttaa kuukauden
+     */
+    public int getKk() {
+        return this.kk;
+    }
+    
+    /**
+     * @return palauttaa vuoden
+     */
+    public int getVv() {
+        return this.vv;
+    }
+    
+    /**
      *  alustaa p‰iv‰m‰‰r‰n t‰ll‰ p‰iv‰lle
      */
     public Pvm() {
-        var nyt = Calendar.getInstance();
-        this.pv= nyt.get(Calendar.DATE);
-        this.kk= nyt.get(Calendar.MONTH) - Calendar.JANUARY + 1;
-        this.vv=nyt.get(Calendar.YEAR);
+        //
         }
     
     
@@ -64,6 +84,28 @@ public class Pvm {
         this.kk = rand(1,12);
         this.vv = 2021;
     }
+    
+    /**
+     * @param i pv
+     * @param j kk
+     * @param k vv
+     */
+    public void taytaTiedot(int i, int j, int k) {        
+        this.pv=i;
+        this.kk=j;
+        this.vv=k;
+    }
+    
+    
+    /**
+     * Laittaa pvm:n tiedot t‰lle p‰iv‰lle
+     */
+    public void taytaTanaan() {
+        var nyt = Calendar.getInstance();
+        this.pv= nyt.get(Calendar.DATE);
+        this.kk= nyt.get(Calendar.MONTH) - Calendar.JANUARY + 1;
+        this.vv=nyt.get(Calendar.YEAR);
+    }
 
     /**
      * @return tietyn p‰iv‰m‰‰r‰n tunnusnumeron 
@@ -73,23 +115,22 @@ public class Pvm {
     }
     
     /**
+     * @param id p‰iv‰m‰‰r‰n tunnusnumero
+     */
+    public void setTunnusNro(int id) {
+        tunnusNro = id;
+        if (seuraavaNro<=id) seuraavaNro =id+1;
+    }
+    
+    /**
      * tulostaa p‰iv‰m‰‰r‰n
      */ 
     @Override
     public String toString() {
-        return this.pv +"." + this.kk+"." + this.vv;
+        return this.tunnusNro + "|" + this.pv +"." + this.kk+"." + this.vv;
     }
 
-    /**
-     * @param i pv
-     * @param j kk
-     * @param k vv
-     */
-    public void tayta(int i, int j, int k) {        
-        this.pv=i;
-        this.kk=j;
-        this.vv=k;
-    }
+
 
 
     /**
@@ -98,5 +139,17 @@ public class Pvm {
     public void tulosta(PrintStream out) {
         out.println(this.pv +"." + this.kk+"." + this.vv);
         
+    }
+
+
+    /**Poimitaan pvm:n tiedot k‰yttˆliittym‰‰n
+     * @param rivi rivi teksti‰ tiedostossa
+     */
+    public void parse(String rivi) {
+        StringBuilder sb = new StringBuilder(rivi);
+        setTunnusNro(Mjonot.erota(sb,'|',getTunnusNro()));
+        this.pv = Mjonot.erota(sb, '.',pv);
+        this.kk = Mjonot.erota(sb, '.',kk);
+        this.vv = Mjonot.erota(sb, '.',vv);
     }
 }
