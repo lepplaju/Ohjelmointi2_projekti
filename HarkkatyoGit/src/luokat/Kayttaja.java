@@ -1,5 +1,7 @@
 package luokat;
 
+import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 /**Luokka kertoo kuka ohjelmaa k‰ytt‰‰
@@ -82,6 +84,70 @@ public class Kayttaja {
     public Pvm annaPvm(int tunnusNro){
         return pvmt.annaPvm(tunnusNro+1);
     }
+    
+    /**Antaa lajin tietyn indeksin avulla
+     * @param id indeksi
+     * @return Laji
+     */
+    public Laji annaLaji(int id) {
+        return lajit.getLaji(id);
+    }
+    
+    /**
+     * Asettaa tiedostojen perusnimet
+     * @param nimi uusi nimi
+     */
+    public void setTiedosto(String nimi) {
+        File dir = new File(nimi);
+        dir.mkdirs();
+        String hakemistonNimi = "";
+        if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";
+        pvmt.setTiedostonPerusNimi(hakemistonNimi + "nimet");
+        lajit.setTiedostonPerusNimi(hakemistonNimi + "harrastukset");
+    }
+    
+    /**Lukee k‰ytt‰j‰n tiedot tiedostot
+     * @param nimi tiedoston nimi
+     * @throws SailoException jos lukeiminen ep‰onnistui
+     */
+    public void lueTiedostosta(String nimi) throws SailoException {
+        pvmt = new Pvmt(); // jos luetaan olemassa olevaan niin helpoin tyhjent‰‰ n‰in
+        lajit = new Lajit();
+
+        setTiedosto(nimi);
+        pvmt.lueTiedostosta();
+        lajit.lueTiedostosta();
+    }
+    
+    /**Tallentaa Tiedoston
+     * @throws SailoException jos tulee poikkeus
+     */
+    public void tallenna() throws SailoException {
+        String virhe = "";
+        try {
+            pvmt.tallenna();
+        } catch ( SailoException ex ) {
+            virhe = ex.getMessage();
+        }
+
+        try {
+            lajit.tallenna();
+        } catch ( SailoException ex ) {
+            virhe += ex.getMessage();
+        }
+        if ( !"".equals(virhe) ) throw new SailoException(virhe);
+    }
+
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien j‰senten viitteet 
+     * @param hakuehto hakuehto 
+     * @return tietorakenteen lˆytyneist‰ j‰senist‰ 
+     * @throws SailoException Jos jotakin menee v‰‰rin
+     */ 
+    public Collection<Pvm> etsi(String hakuehto) throws SailoException { 
+        return pvmt.etsi(hakuehto); 
+    } 
+    
     
     /**
      * p‰‰ohjelma

@@ -24,7 +24,7 @@ public class Pvmt implements Iterable<Pvm>{
 
     private boolean muutettu = false;
     private String kokoNimi = "";
-    private String tiedostonPerusNimi = "nimet";
+    private String tiedostonPerusNimi = "pvmt";
     private Collection<Pvm> paivamaarat = new ArrayList<Pvm>();
     
     /** Lis‰‰ p‰iv‰m‰‰r‰n, p‰iv‰m‰‰r‰t-listaan
@@ -72,6 +72,19 @@ public class Pvmt implements Iterable<Pvm>{
         return null;
     }
     
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien j‰senten viitteet 
+     * @param hakuehto hakuehto  
+     * @return kaikki lˆytyneet p‰iv‰m‰‰r‰t
+     */ 
+    @SuppressWarnings("unused")
+    public Collection<Pvm> etsi(String hakuehto) { 
+        Collection<Pvm> loytyneet = new ArrayList<Pvm>(); 
+        for (Pvm pvm : this) { 
+            loytyneet.add(pvm);  
+        } 
+        return loytyneet; 
+    }
 
 
     
@@ -154,8 +167,6 @@ public class Pvmt implements Iterable<Pvm>{
      * @throws SailoException poikkeus
      */
     public void tallenna() throws SailoException {
-        if ( !muutettu ) return;
-
         File fbak = new File(getBakNimi());
         File ftied = new File(getTiedostonNimi());
         fbak.delete(); // if .. System.err.println("Ei voi tuhota");

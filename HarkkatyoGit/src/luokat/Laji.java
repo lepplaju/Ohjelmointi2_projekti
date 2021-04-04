@@ -8,7 +8,7 @@ package luokat;
  */
 public class Laji {
     private static int seuraavaNro =1;
-    private int lajiId=0;
+    private int lajiId;
     private String laji="";
    
     /**
@@ -48,7 +48,7 @@ public class Laji {
      * T‰ytt‰‰ lajin nimen - oikeasti k‰ytt‰j‰n pit‰‰ antaa itse
      */
     public void taytaTiedot() {
-        this.laji = "Lajin nimi";
+        this.laji = "Punttisali " + rand(1,10);
     }
     
     @Override
@@ -69,6 +69,8 @@ public class Laji {
     public int getLajiId() {
         return this.lajiId; 
     }
+    
+    
       
     /**random number generator
      * @param ala alaraja
@@ -79,5 +81,15 @@ public class Laji {
         double n = (yla-ala)*Math.random() + ala;
         return (int)Math.round(n);
      }
+
+    /**
+     * @param rivi
+     */
+    public void parse(String rivi) {
+        // TODO Auto-generated method stub
+        
+    }
+
+
 
 }

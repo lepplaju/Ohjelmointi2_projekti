@@ -1,6 +1,7 @@
 package Kayttoliittyma;
 
 import java.io.PrintStream;
+import java.util.Collection;
 import java.util.List;
 
 import fi.jyu.mit.fxgui.ComboBoxChooser;
@@ -8,6 +9,7 @@ import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.TextAreaOutputStream;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,6 +21,8 @@ import javafx.scene.text.Font;
 import luokat.Kayttaja;
 import luokat.Laji;
 import luokat.Pvm;
+import luokat.Pvmt;
+import luokat.SailoException;
 import luokat.Urheilu;
 
 import java.net.URI;
@@ -48,14 +52,24 @@ public class PaivakirjaGUIController implements Initializable{
     }
 
     @FXML private void handleHakuehto() {
-        String hakukentta = cbLajit.getSelectedText();
-        String ehto = hakuehto.getText(); 
-        if ( ehto.isEmpty() )
-            naytaVirhe(null);
-        else
-            naytaVirhe("Ei osata viel‰ hakea " + hakukentta + ": " + ehto);
+        if (pvmKohdalla !=null )
+            hae(pvmKohdalla.getTunnusNro());
+        
     }
+    
+    
+    @FXML private void HandleLopeta() {
+        tallenna();
+        Platform.exit();
+    } 
 
+    @FXML private void HandleTallenna() {
+        tallenna();
+    }
+    
+    @FXML private void handleAvaa() {
+        avaa();
+    }
 
 
     @FXML
@@ -74,18 +88,13 @@ public class PaivakirjaGUIController implements Initializable{
     }
 
     @FXML
-    void Tallenna(ActionEvent event) {
-        Dialogs.showMessageDialog("ei osata tallentaa");
-    }
-
-    @FXML
     void UusiKentta(ActionEvent event) {
         Dialogs.showMessageDialog("ei osata lis‰t‰ uutta kentt‰‰");
     }
 
     @FXML
-    void HandleUusiKirjaus(ActionEvent event) {
-        uusiKirjaus();
+    void HandleUusiPvm(ActionEvent event) {
+        uusiPvm();
     }
 
     @FXML
@@ -105,6 +114,7 @@ public class PaivakirjaGUIController implements Initializable{
     private Kayttaja kayttaja = new Kayttaja();
     private Pvm pvmKohdalla;
     private TextArea areaText = new TextArea();
+    private String kayttajannimi="Late";
 
     /**
      * Alustaa tiedot yhteen isoon tekstikentt‰‰n
@@ -128,13 +138,52 @@ public class PaivakirjaGUIController implements Initializable{
         labelVirhe.getStyleClass().add("virhe");
     }
     
+    private void setTitle(String title) {
+        ModalController.getStage(hakuehto).setTitle(title);
+    }
+   
+    
     /**
-     * 
+     * @param nimi Lukee tiedoston
+     * @return Palauttaa vireheen tai ei mit‰‰n
+     */
+    protected String lueTiedosto(String nimi) {
+        kayttajannimi = nimi;
+        setTitle("K‰ytt‰j‰ - " + kayttajannimi);
+        try {
+            kayttaja.lueTiedostosta(nimi);
+            hae(0);
+            return null;
+        } catch (SailoException e) {
+            hae(0);
+            String virhe = e.getMessage(); 
+            if ( virhe != null ) Dialogs.showMessageDialog(virhe);
+            return virhe;
+        }
+     }
+
+    /**
+     * Kysyt‰‰n tiedoston nimi ja luetaan se
+     * @return true jos onnistui, false jos ei
+     */
+    public boolean avaa() {
+        String uusinimi = KayttajanNimiController.kysyNimi(null, kayttajannimi);
+        if (uusinimi == null) return false;
+        lueTiedosto(uusinimi);
+        return true;
+    }
+
+    
+    /**
+     * N‰ytt‰‰ urheilun tiedot p‰iv‰m‰‰r‰n kohdalla
      */
     protected void naytaTiedot() {
         pvmKohdalla = chooserPvm.getSelectedObject();
 
-        if (pvmKohdalla == null) return;
+        if (pvmKohdalla == null) {
+            areaText.clear();
+            return;
+        }
 
         areaText.setText("");
         try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaText)) {
@@ -142,13 +191,34 @@ public class PaivakirjaGUIController implements Initializable{
         }
     }
     
+    private String tallenna() {
+        try {
+            kayttaja.tallenna();
+            return null;
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog("Tallennuksessa ongelmia! " + ex.getMessage());
+            return ex.getMessage();
+        }
+    }
+    
+    /**
+     * Tarkistetaan onko tallennus tehty
+     * @return true jos saa sulkea sovelluksen, false jos ei
+     */
+    public boolean voikoSulkea() {
+        tallenna();
+        return true;
+    }
+
+
+    
     /**Hakee t‰m‰n p‰iv‰m‰‰r‰n tiedot listaan
      * @param pvmId mik‰ on p‰iv‰n id
      */
     protected void hae(int pvmId) {
         chooserPvm.clear();
-
-        int index = 0;
+        int index=0;
+        
         for (int i = 0; i < kayttaja.getEriPaivat(); i++) {
             Pvm pvm = kayttaja.annaPvm(i);
             if (pvm.getTunnusNro() == pvmId) index = i;
@@ -160,7 +230,7 @@ public class PaivakirjaGUIController implements Initializable{
     /**
      * Lis‰t‰‰n uusi P‰iv‰m‰‰r‰
      */
-    protected void uusiKirjaus() {
+    protected void uusiPvm() {
         Pvm uusi = new Pvm();
         uusi.rekisteroi();
         uusi.taytaTiedot();
@@ -200,6 +270,14 @@ public class PaivakirjaGUIController implements Initializable{
         kayttaja.lisaa(urh);  
         hae(pvmKohdalla.getTunnusNro());          
     }
+    
+    /**
+     * @param kayttaja k‰ytt‰j‰ jota k‰ytet‰‰n t‰ss‰ k‰yttˆliittym‰ss‰
+     */
+    public void setKayttaja(Kayttaja kayttaja) {
+        this.kayttaja = kayttaja;
+        naytaTiedot();
+    }
 
 
     /**
@@ -214,9 +292,5 @@ public class PaivakirjaGUIController implements Initializable{
         for (Urheilu urh : urheilut)
             urh.tulosta(os);  
     }
-
-
-
-
 
 }
