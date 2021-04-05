@@ -126,6 +126,7 @@ public class PaivakirjaGUIController implements Initializable{
         
         chooserPvm.clear();
         chooserPvm.addSelectionListener(e -> naytaTiedot());
+        
     }
 
     private void naytaVirhe(String virhe) {
@@ -172,6 +173,19 @@ public class PaivakirjaGUIController implements Initializable{
         lueTiedosto(uusinimi);
         return true;
     }
+    
+    /**
+     * Saa tiedostosta luetut lajit näkyviin
+     */
+    public void getLajitNakyviin() {
+        
+        for (int i =0; i<kayttaja.getLajiLkm(); i++) {
+            Laji uusi = kayttaja.annaLaji(i);
+            if (uusi!=null)
+                cbLajit.add(uusi);    
+        }
+        
+    }
 
     
     /**
@@ -179,7 +193,9 @@ public class PaivakirjaGUIController implements Initializable{
      */
     protected void naytaTiedot() {
         pvmKohdalla = chooserPvm.getSelectedObject();
-
+        
+        getLajitNakyviin();
+        
         if (pvmKohdalla == null) {
             areaText.clear();
             return;
@@ -189,6 +205,7 @@ public class PaivakirjaGUIController implements Initializable{
         try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaText)) {
             tulosta(os,pvmKohdalla);  
         }
+            
     }
     
     private String tallenna() {

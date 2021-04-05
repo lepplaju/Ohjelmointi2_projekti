@@ -19,10 +19,9 @@ import java.util.List;
  */
 public class Urheilut implements Iterable<Urheilu> {
 
-    private Collection<Urheilu> alkiot = new ArrayList<Urheilu>();
-    
     private boolean muutettu = false;
-    private String tiedostonPerusNimi = "urheilut";
+    private String tiedostonPerusNimi = "";
+    private Collection<Urheilu> alkiot = new ArrayList<Urheilu>();
     
     /**antaa kaikki urheilut tietylt‰ p‰iv‰m‰‰r‰lt‰
      * @param pvmTunnusNro p‰iv‰m‰‰r‰n tunnusnumero
@@ -91,9 +90,8 @@ public class Urheilut implements Iterable<Urheilu> {
     public void lueTiedostosta(String tied) throws SailoException {
         setTiedostonPerusNimi(tied);
         try ( BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi())) ) {
-            String rivi = fi.readLine();
-            if ( rivi == null ) throw new SailoException("Error");
-            // int maxKoko = Mjonot.erotaInt(rivi,10); // tehd‰‰n jotakin
+            
+            String rivi;
 
             while ( (rivi = fi.readLine()) != null ) {
                 rivi = rivi.trim();

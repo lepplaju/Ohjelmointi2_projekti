@@ -103,8 +103,8 @@ public class Urheilu {
     
     @Override
     public String toString() {
-        return /*getLaji(this.laji) +", " + */this.suoritusaika+", " +this.intensity +", " +  
-                this.tyytyvaisyys+", "  +this.muutaLisattavaa;
+        return "" + getTunnusNro() + "|" + pvmNro + "|" + lajiId + "|" + klo + "|" + suoritusaika 
+                + "|" + intensity + "|" + tyytyvaisyys;
     }
 
     /**Asettaa urheilun tunnusnumeron

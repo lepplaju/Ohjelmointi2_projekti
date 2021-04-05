@@ -92,6 +92,14 @@ public class Kayttaja {
     public Laji annaLaji(int id) {
         return lajit.getLaji(id);
     }
+
+    
+    /**Palauttaa kuinka monta lajia taulukosa on kirjattu
+     * @return lajien lukumäärän
+     */
+    public int getLajiLkm() {
+        return lajit.getLkm();
+    }
     
     /**
      * Asettaa tiedostojen perusnimet

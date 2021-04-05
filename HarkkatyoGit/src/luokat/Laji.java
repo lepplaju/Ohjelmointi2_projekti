@@ -1,5 +1,6 @@
 package luokat;
 
+import fi.jyu.mit.ohj2.Mjonot;
 
 /**Luokka kertoo lajin
  * @author Lepplaju
@@ -53,14 +54,14 @@ public class Laji {
     
     @Override
     public String toString() {
-        return this.laji;
+        return "" + lajiId + "|" + laji;
     }
     
     /**Teksti joka näkyy käyttäjälle
      * @return lajin nimen
      */
     public String getLaji() {
-        return laji;
+        return this.laji;
     }
     
     /**Palauttaa lajin tunnusnumeron
@@ -70,7 +71,13 @@ public class Laji {
         return this.lajiId; 
     }
     
-    
+    /**asettaa lajille id:n
+     * @param id numero
+     */
+    public void setTunnusNro(int id) {
+        lajiId=id;
+        if (seuraavaNro<=id) seuraavaNro =id+1;
+    }
       
     /**random number generator
      * @param ala alaraja
@@ -83,10 +90,12 @@ public class Laji {
      }
 
     /**
-     * @param rivi
+     * @param rivi tiedoston rivi tekstiä
      */
     public void parse(String rivi) {
-        // TODO Auto-generated method stub
+        StringBuilder sb = new StringBuilder(rivi);
+        setTunnusNro(Mjonot.erota(sb,'|',getLajiId()));
+        laji = Mjonot.erota(sb,'|',laji);
         
     }
 
