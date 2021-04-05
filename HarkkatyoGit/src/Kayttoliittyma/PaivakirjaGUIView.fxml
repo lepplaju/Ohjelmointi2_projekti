@@ -11,8 +11,10 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="449.0" prefWidth="932.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Kayttoliittyma.PaivakirjaGUIController">
    <left>
@@ -73,7 +75,21 @@
    <bottom>
       <HBox prefHeight="200.0" prefWidth="629.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane fx:id="panelTiedot" prefHeight="200.0" prefWidth="478.0" />
+            <VBox prefHeight="200.0" prefWidth="185.0">
+               <children>
+                  <TextField fx:id="hakuehto">
+                     <VBox.margin>
+                        <Insets right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <ComboBoxChooser fx:id="cbKentat" onAction="#handleHakuehto" prefHeight="25.0" prefWidth="132.0">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </ComboBoxChooser>
+               </children>
+            </VBox>
+            <ScrollPane fx:id="panelTiedot" prefHeight="200.0" prefWidth="447.0" />
             <Button mnemonicParsing="false" onAction="#HandleUusiPvm" text="Lisaa Pvm" />
             <TextArea prefHeight="200.0" prefWidth="135.0" />
             <ComboBoxChooser fx:id="cbLajit" />

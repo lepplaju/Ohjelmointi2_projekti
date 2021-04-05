@@ -60,7 +60,7 @@ package Kayttoliittyma;
         public static String kysyNimi(Stage modalityStage, String oletus) {
             return ModalController.showModal(
                     KayttajanNimiController.class.getResource("KayttajanNimiView.fxml"),
-                    "Late",
+                    "Päiväkirja",
                     modalityStage, oletus);
         }
     }

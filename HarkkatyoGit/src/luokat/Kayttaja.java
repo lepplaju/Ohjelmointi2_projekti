@@ -102,8 +102,9 @@ public class Kayttaja {
         dir.mkdirs();
         String hakemistonNimi = "";
         if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";
-        pvmt.setTiedostonPerusNimi(hakemistonNimi + "nimet");
-        lajit.setTiedostonPerusNimi(hakemistonNimi + "harrastukset");
+        pvmt.setTiedostonPerusNimi(hakemistonNimi + "pvmt");
+        lajit.setTiedostonPerusNimi(hakemistonNimi + "lajit");
+        urheilut.setTiedostonPerusNimi(hakemistonNimi + "urheilut");
     }
     
     /**Lukee k‰ytt‰j‰n tiedot tiedostot
@@ -113,10 +114,12 @@ public class Kayttaja {
     public void lueTiedostosta(String nimi) throws SailoException {
         pvmt = new Pvmt(); // jos luetaan olemassa olevaan niin helpoin tyhjent‰‰ n‰in
         lajit = new Lajit();
+        urheilut = new Urheilut();
 
         setTiedosto(nimi);
         pvmt.lueTiedostosta();
         lajit.lueTiedostosta();
+        urheilut.lueTiedostosta();
     }
     
     /**Tallentaa Tiedoston
@@ -133,8 +136,15 @@ public class Kayttaja {
         try {
             lajit.tallenna();
         } catch ( SailoException ex ) {
-            virhe += ex.getMessage();
+            virhe = ex.getMessage();
         }
+        
+       try {
+           urheilut.tallenna();
+       } catch ( SailoException ex ) {
+           virhe = ex.getMessage();
+       }
+        
         if ( !"".equals(virhe) ) throw new SailoException(virhe);
     }
 

@@ -149,7 +149,7 @@ public class PaivakirjaGUIController implements Initializable{
      */
     protected String lueTiedosto(String nimi) {
         kayttajannimi = nimi;
-        setTitle("K‰ytt‰j‰ - " + kayttajannimi);
+        setTitle("P‰iv‰kirja: K‰ytt‰j‰ - " + kayttajannimi);
         try {
             kayttaja.lueTiedostosta(nimi);
             hae(0);
@@ -267,7 +267,11 @@ public class PaivakirjaGUIController implements Initializable{
         Urheilu urh = new Urheilu();  
         urh.rekisteroi();  
         urh.taytaTiedot(pvmKohdalla.getTunnusNro());  
-        kayttaja.lisaa(urh);  
+        try {
+            kayttaja.lisaa(urh);
+        } catch (Exception e) {
+            Dialogs.showMessageDialog("Ongelmia lis‰‰misess‰! " + e.getMessage());
+        } 
         hae(pvmKohdalla.getTunnusNro());          
     }
     
@@ -284,13 +288,17 @@ public class PaivakirjaGUIController implements Initializable{
      * @param os Tietovirta
      * @param pvm Mik‰ p‰iv‰m‰‰r‰
      */
-    public void tulosta(PrintStream os, final Pvm pvm) {
+    public void tulosta(PrintStream os, final Pvm pvm){
         os.println("----------------------------------------------");
         pvm.tulosta(os);
         os.println("----------------------------------------------");
-        List<Urheilu> urheilut = kayttaja.annaUrheilut(pvm);   
-        for (Urheilu urh : urheilut)
-            urh.tulosta(os);  
+        try {
+            List<Urheilu> urheilut = kayttaja.annaUrheilut(pvm);   
+            for (Urheilu urh : urheilut)
+                urh.tulosta(os);  
+        } catch (Exception ex) {
+            Dialogs.showMessageDialog("ERROR" + ex.getMessage());
+        }
     }
 
 }

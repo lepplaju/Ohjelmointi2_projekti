@@ -1,5 +1,12 @@
 package luokat;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -14,6 +21,8 @@ public class Urheilut implements Iterable<Urheilu> {
 
     private Collection<Urheilu> alkiot = new ArrayList<Urheilu>();
     
+    private boolean muutettu = false;
+    private String tiedostonPerusNimi = "urheilut";
     
     /**antaa kaikki urheilut tietylt‰ p‰iv‰m‰‰r‰lt‰
      * @param pvmTunnusNro p‰iv‰m‰‰r‰n tunnusnumero
@@ -64,7 +73,112 @@ public class Urheilut implements Iterable<Urheilu> {
      */
     public void lisaa(Urheilu urh) {
         alkiot.add(urh);
-        
+        muutettu=true;
     }
+
+    /**
+     * Palauttaa varakopiotiedoston nimen
+     * @return varakopiotiedoston nimi
+     */
+    public String getBakNimi() {
+        return tiedostonPerusNimi + ".bak";
+    }
+    
+    /**
+     * @param tied tiedoston nimi
+     * @throws SailoException jos tiedoston lukeminen ep‰onnistuu
+     */
+    public void lueTiedostosta(String tied) throws SailoException {
+        setTiedostonPerusNimi(tied);
+        try ( BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi())) ) {
+            String rivi = fi.readLine();
+            if ( rivi == null ) throw new SailoException("Error");
+            // int maxKoko = Mjonot.erotaInt(rivi,10); // tehd‰‰n jotakin
+
+            while ( (rivi = fi.readLine()) != null ) {
+                rivi = rivi.trim();
+                if ( "".equals(rivi) || rivi.charAt(0) == ';' ) continue;               
+                Urheilu urheilu = new Urheilu();
+                urheilu.parse(rivi); // voisi olla virhek‰sittely
+                lisaa(urheilu);
+            }
+            muutettu = false;
+        } catch ( FileNotFoundException e ) {
+            throw new SailoException("Tiedosto " + getTiedostonNimi() + " ei aukea");
+        } catch ( IOException e ) {
+            throw new SailoException("Ongelmia tiedoston kanssa: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Tallentaa j‰senistˆn tiedostoon.  Kesken.
+     * Luetaan aikaisemmin annetun nimisest‰ tiedostosta
+     * @throws SailoException jos tulee poikkeus
+     */
+    public void lueTiedostosta() throws SailoException {
+        lueTiedostosta(getTiedostonPerusNimi());
+    }
+
+
+    /**Asettaa tiedoston nimen
+     * @param nimi parametrina
+     */
+    public void setTiedostonPerusNimi(String nimi) {
+        tiedostonPerusNimi = nimi;
+    }
+    
+    /**
+     * Palauttaa tiedoston nimen, jota k‰ytet‰‰n tallennukseen
+     * @return tallennustiedoston nimi
+     */
+
+    public String getTiedostonNimi() {
+        return getTiedostonPerusNimi() + ".dat";
+    }
+    
+    /**
+     * Palauttaa tiedoston nimen, jota k‰ytet‰‰n tallennukseen
+     * @return tallennustiedoston nimi
+     */
+
+    public String getTiedostonPerusNimi() {
+        return tiedostonPerusNimi;
+    }
+
+    /**
+     * tallentaa tiedoston
+     * @throws SailoException poikkeus
+     */
+    public void tallenna() throws SailoException {
+        File fbak = new File(getBakNimi());
+        File ftied = new File(getTiedostonNimi());
+        fbak.delete(); // if .. System.err.println("Ei voi tuhota");
+        ftied.renameTo(fbak); // if .. System.err.println("Ei voi nimet‰");
+
+        try ( PrintWriter fo = new PrintWriter(new FileWriter(ftied.getCanonicalPath())) ) {
+            fo.println(alkiot.size());
+            for (Urheilu urh : this) {
+                fo.println(urh.toString());
+            }
+            //} catch ( IOException e ) { // ei heit‰ poikkeusta
+            //  throw new SailoException("Tallettamisessa ongelmia: " + e.getMessage());
+        } catch ( FileNotFoundException ex ) {
+            throw new SailoException("Tiedosto " + ftied.getName() + " ei aukea");
+        } catch ( IOException ex ) {
+            throw new SailoException("Tiedoston " + ftied.getName() + " kirjoittamisessa ongelmia");
+        }
+
+        muutettu = false;
+    }
+
+
+    /**
+     * Palauttaa kerhon harrastusten lukum‰‰r‰n
+     * @return urheilujen lukum‰‰r‰n
+     */
+    public int getLkm() {
+        return alkiot.size();
+    }
+
     
 }

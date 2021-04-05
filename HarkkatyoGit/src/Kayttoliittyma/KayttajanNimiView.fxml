@@ -7,7 +7,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="295.0" prefWidth="468.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxKerho.KayttajanNimiController">
+<BorderPane prefHeight="295.0" prefWidth="468.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Kayttoliittyma.KayttajanNimiController">
    <center>
       <VBox alignment="CENTER" style="-fx-background-color: #ffff99;" BorderPane.alignment="CENTER">
          <children>

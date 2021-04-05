@@ -2,6 +2,9 @@ package luokat;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+
+import fi.jyu.mit.ohj2.Mjonot;
+
 import static luokat.Laji.rand;
 
 /**
@@ -83,12 +86,35 @@ public class Urheilu {
                 +  "treeniin tyytyväisyys: " + this.tyytyvaisyys+", "  +this.muutaLisattavaa);
     }
     
+    /**Selvittää urheilun tiedot | erotellusta merkkijonosta
+     * @param rivi yhden urheilun tiedot
+     */
+    public void parse(String rivi) {
+        StringBuilder sb = new StringBuilder(rivi);
+        setTunnusNro(Mjonot.erota(sb, '|', getTunnusNro()));
+        pvmNro = Mjonot.erota(sb, '|', pvmNro);
+        lajiId=Mjonot.erota(sb, '|',lajiId);
+        klo=Mjonot.erota(sb, '|',klo);       
+        suoritusaika=Mjonot.erota(sb, '|',suoritusaika);
+        intensity=Mjonot.erota(sb, '|',intensity);
+        tyytyvaisyys=Mjonot.erota(sb, '|',tyytyvaisyys);
+        muutaLisattavaa=Mjonot.erota(sb, '|',"ei muuta lisättävää");
+    }
+    
     @Override
     public String toString() {
         return /*getLaji(this.laji) +", " + */this.suoritusaika+", " +this.intensity +", " +  
                 this.tyytyvaisyys+", "  +this.muutaLisattavaa;
     }
 
+    /**Asettaa urheilun tunnusnumeron
+     * @param id tunnusnumero
+     */
+    public void setTunnusNro(int id){
+      this.tunnusNro =id;  
+      if ( tunnusNro >= seuraavaNro ) seuraavaNro = tunnusNro + 1;
+    }
+    
     /**
      * @return palauttaa lajin id:n
      */
