@@ -154,6 +154,7 @@ public class Lajit {
     public Laji getLaji(int i) {
         return lajit[i];
     }
+
     
     /**
      * @return kuinka monta lajia on olemassa

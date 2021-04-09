@@ -9,7 +9,7 @@
 
 <BorderPane prefHeight="295.0" prefWidth="468.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Kayttoliittyma.KayttajanNimiController">
    <center>
-      <VBox alignment="CENTER" style="-fx-background-color: #ffff99;" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" style="-fx-background-color: #000000;" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="50.0" text="UrheiluPaivakirja">
                <font>

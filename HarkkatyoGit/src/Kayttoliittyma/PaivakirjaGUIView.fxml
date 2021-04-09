@@ -28,15 +28,15 @@
         <menus>
           <Menu mnemonicParsing="false" text="Lisää">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#HandleUusiPvm" text="Uusi Kirjaus" />
-                  <MenuItem mnemonicParsing="false" onAction="#UusiKentta" text="Uusi Kenttä" />
+              <MenuItem mnemonicParsing="false" onAction="#HandleUusiPvm" text="Uusi Päivämäärä" />
+                  <MenuItem mnemonicParsing="false" onAction="#HandleUusiUrheilu" text="Uusi Urheilu" />
                   <MenuItem mnemonicParsing="false" onAction="#HandleUusiLaji" text="Uusi Laji" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#MuokkaaKirjausta" text="Muokkaa Kirjausta" />
-                  <MenuItem mnemonicParsing="false" onAction="#MuokkaaKenttia" text="Muokkaa Kenttiä" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaPvm" text="Muokkaa Päivämäärää" />
+                  <MenuItem mnemonicParsing="false" onAction="#MuokkaaUrheilua" text="Muokkaa Urheilua" />
               <MenuItem mnemonicParsing="false" onAction="#MuokkaaLajeja" text="Muokkaa Lajeja" />
             </items>
           </Menu>

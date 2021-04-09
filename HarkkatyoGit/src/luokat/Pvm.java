@@ -130,7 +130,12 @@ public class Pvm {
         return this.tunnusNro + "|" + this.pv +"." + this.kk+"." + this.vv;
     }
 
-
+    /**Palauttaa tiedot ilman että tunnusNro tulee näytölle
+     * @return päiväyksen ilman tunnusnumeroa
+     */
+    public String getPaivays() {
+        return this.pv +"." + this.kk+"." + this.vv;
+    }
 
 
     /**

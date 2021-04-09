@@ -4,8 +4,9 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 import fi.jyu.mit.ohj2.Mjonot;
-
 import static luokat.Laji.rand;
+import luokat.Laji;
+import luokat.Lajit;
 
 /**
  * @author Lepplaju
@@ -86,6 +87,7 @@ public class Urheilu {
                 +  "treeniin tyytyv‰isyys: " + this.tyytyvaisyys+", "  +this.muutaLisattavaa);
     }
     
+
     /**Selvitt‰‰ urheilun tiedot | erotellusta merkkijonosta
      * @param rivi yhden urheilun tiedot
      */

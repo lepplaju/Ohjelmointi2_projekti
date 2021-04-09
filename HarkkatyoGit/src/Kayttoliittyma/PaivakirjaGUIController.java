@@ -73,13 +73,13 @@ public class PaivakirjaGUIController implements Initializable{
 
 
     @FXML
-    void MuokkaaKenttia(ActionEvent event) {
-        Dialogs.showMessageDialog("ei osata muokata kentti‰ viel‰");
+    void MuokkaaUrheilua(ActionEvent event) {
+        Dialogs.showMessageDialog("ei osata muokata urheilua viel‰");
     }
 
     @FXML
-    void MuokkaaKirjausta(ActionEvent event) {
-        Dialogs.showMessageDialog("ei osata muokata kirjausta viel‰");
+    void handleMuokkaaPvm(ActionEvent event) {
+        muokkaaPvm();
     }
 
     @FXML
@@ -120,7 +120,7 @@ public class PaivakirjaGUIController implements Initializable{
      * Alustaa tiedot yhteen isoon tekstikentt‰‰n
      */
     protected void alusta() {
-        panelTiedot.setContent(areaText);
+        //panelTiedot.setContent(areaText);
         areaText.setFont(new Font("Courier New", 12));
         panelTiedot.setFitToHeight(true);
         
@@ -177,8 +177,7 @@ public class PaivakirjaGUIController implements Initializable{
     /**
      * Saa tiedostosta luetut lajit n‰kyviin
      */
-    public void getLajitNakyviin() {
-        
+    public void getLajitNakyviin() {        
         for (int i =0; i<kayttaja.getLajiLkm(); i++) {
             Laji uusi = kayttaja.annaLaji(i);
             if (uusi!=null)
@@ -300,6 +299,12 @@ public class PaivakirjaGUIController implements Initializable{
         naytaTiedot();
     }
 
+    /**
+     * Avaa PvmDialogin ja sen sis‰ll‰ pystyt‰‰n muokkaamaan p‰iv‰m‰‰r‰‰
+     */
+    public void muokkaaPvm() {
+        PvmDialogController.kysyPvm(null,pvmKohdalla);
+    }
 
     /**
      * @param os Tietovirta
