@@ -8,6 +8,7 @@ import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
+import fi.jyu.mit.fxgui.StringGrid;
 import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -41,10 +42,11 @@ import java.util.ResourceBundle;
 public class PaivakirjaGUIController implements Initializable{
       
     @FXML private TextField hakuehto;
-    @FXML private ComboBoxChooser<Laji> cbLajit;
     @FXML private Label labelVirhe;
     @FXML private ScrollPane panelTiedot;
+    @FXML private ComboBoxChooser<Laji> cbLajit;
     @FXML private ListChooser<Pvm> chooserPvm;
+    @FXML private StringGrid<Urheilu>urheiluTable;
     
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
@@ -113,15 +115,12 @@ public class PaivakirjaGUIController implements Initializable{
 
     private Kayttaja kayttaja = new Kayttaja();
     private Pvm pvmKohdalla;
-    private TextArea areaText = new TextArea();
     private String kayttajannimi="Late";
 
     /**
      * Alustaa tiedot yhteen isoon tekstikentt‰‰n
      */
     protected void alusta() {
-        //panelTiedot.setContent(areaText);
-        areaText.setFont(new Font("Courier New", 12));
         panelTiedot.setFitToHeight(true);
         
         chooserPvm.clear();
@@ -191,22 +190,34 @@ public class PaivakirjaGUIController implements Initializable{
      * N‰ytt‰‰ urheilun tiedot p‰iv‰m‰‰r‰n kohdalla
      */
     protected void naytaTiedot() {
-        pvmKohdalla = chooserPvm.getSelectedObject();
-        
-        getLajitNakyviin();
-        
-        if (pvmKohdalla == null) {
-            areaText.clear();
-            return;
-        }
+        pvmKohdalla = chooserPvm.getSelectedObject();  
+        if (pvmKohdalla == null) return;
+        naytaUrheilut(pvmKohdalla);
 
-        areaText.setText("");
-        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaText)) {
-            tulosta(os,pvmKohdalla);  
-        }
-            
+           
     }
     
+    private void naytaUrheilut(Pvm pvm) {
+        urheiluTable.clear();
+        if (pvm == null)return;
+        try {
+            List<Urheilu> urheilut = kayttaja.annaUrheilut(pvm);
+            if (urheilut.size()==0) return;
+            for (Urheilu urh:urheilut) {
+                naytaUrheilu(urh);
+            }
+        } catch (Exception e) {
+            //
+        }
+              
+    }
+    
+    private void naytaUrheilu(Urheilu urh) {
+        String[] rivi = urh.toString().split("\\|");
+        urheiluTable.add(urh,rivi[2],rivi[3],rivi[4],rivi[5]);
+        
+    }
+
     private String tallenna() {
         try {
             kayttaja.tallenna();
@@ -303,7 +314,21 @@ public class PaivakirjaGUIController implements Initializable{
      * Avaa PvmDialogin ja sen sis‰ll‰ pystyt‰‰n muokkaamaan p‰iv‰m‰‰r‰‰
      */
     public void muokkaaPvm() {
-        PvmDialogController.kysyPvm(null,pvmKohdalla);
+        if (pvmKohdalla == null) return;
+        try {
+            Pvm pvm = pvmKohdalla.clone();
+            pvm = PvmDialogController.kysyPvm(null,pvm);
+            if (pvm == null) return;
+            kayttaja.korvaaTaiLisaa(pvm);
+            hae(pvm.getTunnusNro());
+        } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
     /**

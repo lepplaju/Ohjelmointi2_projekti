@@ -136,6 +136,16 @@ public class Pvmt implements Iterable<Pvm>{
     }
 
 
+    /**
+     * @param pvm
+     */
+    public void korvaaTaiLisaa(Pvm pvm) {      
+        // int id = pvm.getTunnusNro();
+        //if ()
+        muutettu=true;
+        }
+        
+    
 
     /**Asettaa tiedoston nimen
      * @param nimi parametrina
@@ -233,5 +243,6 @@ public class Pvmt implements Iterable<Pvm>{
         
         testipaivat.tallenna();
         }
+
 
     }

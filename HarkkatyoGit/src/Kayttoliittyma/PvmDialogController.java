@@ -26,6 +26,9 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
      * Mit‰ tapahtuu kun painetaan ok
      */
     @FXML public void handleOK() {
+        if (pvmKohdalla != null && pvmKohdalla.getPaivays().trim().equals("")) {
+                naytaVirhe("nimi ei saa olla tyhj‰");
+        }
         ModalController.closeStage(labelVirhe);
     }
     
@@ -33,6 +36,7 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
      * Mit‰ tapahtuu kun painetaan cancel
      */
     @FXML public void handleCancel() {
+        pvmKohdalla = null;
         ModalController.closeStage(labelVirhe);
     }
 
@@ -68,6 +72,17 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
         if (pvm == null) return;
         editPaivays.setText(pvm.getPaivays());
     }
+    
+    private void naytaVirhe(String virhe) {
+        if ( virhe == null || virhe.isEmpty() ) {
+            labelVirhe.setText("");
+            labelVirhe.getStyleClass().removeAll("virhe");
+            return;
+        }
+        labelVirhe.setText(virhe);
+        labelVirhe.getStyleClass().add("virhe");
+    }
+
     
     /**P‰iv‰m‰‰r‰n muokkausDialogi
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle

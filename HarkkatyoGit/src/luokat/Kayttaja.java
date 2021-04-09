@@ -61,6 +61,13 @@ public class Kayttaja {
     public void lisaa(Pvm pvm) {
         pvmt.lisaa(pvm);
     }
+    
+    /**Korvaa p‰iv‰m‰‰r‰n, jos sit‰ on muutettu
+     * @param pvm mik‰ p‰iv‰m‰‰r‰ on kyseess‰.
+     */
+    public void korvaaTaiLisaa(Pvm pvm ) {
+        pvmt.korvaaTaiLisaa(pvm);
+    }
 
     /**Antaa tietyn p‰iv‰m‰‰r‰n kaikki urheilusuoritukset n‰kyviin
      * @param pvm p‰iv‰m‰‰r‰, jonka tiedot halutaan n‰kyviin

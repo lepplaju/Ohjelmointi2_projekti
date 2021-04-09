@@ -11,7 +11,7 @@ import fi.jyu.mit.ohj2.Mjonot;
  * @version 15.3.2021
  *
  */
-public class Pvm {
+public class Pvm implements Cloneable {
     private int tunnusNro;
     private static int seuraavaNro = 1;
     private int pv;
@@ -126,7 +126,7 @@ public class Pvm {
      * tulostaa päivämäärän
      */ 
     @Override
-    public String toString() {
+    public String toString() { 
         return this.tunnusNro + "|" + this.pv +"." + this.kk+"." + this.vv;
     }
 
@@ -146,7 +146,13 @@ public class Pvm {
         
     }
 
-
+    @Override
+    public Pvm clone() throws CloneNotSupportedException{
+        Pvm uusi;
+        uusi = (Pvm) super.clone();
+        return uusi;
+    }
+    
     /**Poimitaan pvm:n tiedot käyttöliittymään
      * @param rivi rivi tekstiä tiedostossa
      */
