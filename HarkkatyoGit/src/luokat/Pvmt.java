@@ -13,7 +13,10 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
+
+import Kayttoliittyma.PvmDialogController;
 
 /**
  * @author Lepplaju
@@ -25,7 +28,7 @@ public class Pvmt implements Iterable<Pvm>{
     private boolean muutettu = false;
     private String kokoNimi = "";
     private String tiedostonPerusNimi = "pvmt";
-    private Collection<Pvm> paivamaarat = new ArrayList<Pvm>();
+    private final List<Pvm> paivamaarat = new ArrayList<Pvm>();
     
     /** Lis‰‰ p‰iv‰m‰‰r‰n, p‰iv‰m‰‰r‰t-listaan
      * @param paiv Pvm
@@ -136,13 +139,19 @@ public class Pvmt implements Iterable<Pvm>{
     }
 
 
-    /**
-     * @param pvm
+    /**Korvataan tai lis‰t‰‰n uusi p‰iv‰m‰‰r‰.
+     * @param pvm mit‰ p‰iv‰m‰‰r‰‰ muutetaan
      */
     public void korvaaTaiLisaa(Pvm pvm) {      
-        // int id = pvm.getTunnusNro();
-        //if ()
-        muutettu=true;
+        int id = pvm.getTunnusNro();
+        for (int i = 0; i<getPvmLkm(); i++) {
+            if (paivamaarat.get(i).getTunnusNro()==id) {
+                paivamaarat.set(i,pvm);
+                muutettu=true;
+                return;
+            }
+        }
+        lisaa(pvm);
         }
         
     

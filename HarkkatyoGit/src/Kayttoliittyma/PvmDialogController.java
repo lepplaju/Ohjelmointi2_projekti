@@ -22,12 +22,20 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
     @FXML private Label labelVirhe;
     @FXML private TextField editPaivays;
     
+    
+    @Override
+    public void initialize(URL url, ResourceBundle bundle) {
+        alusta();  
+    }
+
+    
     /**
      * Mit‰ tapahtuu kun painetaan ok
      */
     @FXML public void handleOK() {
         if (pvmKohdalla != null && pvmKohdalla.getPaivays().trim().equals("")) {
-                naytaVirhe("nimi ei saa olla tyhj‰");
+                naytaVirhe("ei saa olla tyhj‰");
+                return;
         }
         ModalController.closeStage(labelVirhe);
     }
@@ -41,9 +49,8 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
     }
 
     @Override
-    public Pvm getResult() {
-        // TODO Auto-generated method stub
-        return null;
+    public Pvm getResult() {       
+        return pvmKohdalla;
     }
 
     @Override
@@ -58,19 +65,19 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
         naytaPvm(pvmKohdalla);
     }
 
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO Auto-generated method stub
-        
-    }
     
     //====================================================
 
     private Pvm pvmKohdalla;
     
+    protected void alusta() {
+        editPaivays.setOnKeyReleased(e-> kasitteleMuutosPvm((TextField)(e.getSource())));
+    }
+    
     private void naytaPvm(Pvm pvm) {
         if (pvm == null) return;
         editPaivays.setText(pvm.getPaivays());
+        kasitteleMuutosPvm(editPaivays);
     }
     
     private void naytaVirhe(String virhe) {
@@ -83,6 +90,18 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
         labelVirhe.getStyleClass().add("virhe");
     }
 
+    private void kasitteleMuutosPvm(TextField edit) {
+        if (pvmKohdalla == null) return;
+        String s = edit.getText();
+        String virhe = null;
+        virhe = pvmKohdalla.setPvm(s);
+        if (virhe==null) {
+            naytaVirhe(virhe);
+        }
+        else {
+            naytaVirhe(virhe);
+        }
+    }
     
     /**P‰iv‰m‰‰r‰n muokkausDialogi
      * @param modalityStage mille ollaan modaalisia, null = sovellukselle
@@ -90,7 +109,8 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
      * @return p‰iv‰m‰‰r‰n, jos sit‰ on muokattu
      */
     public static Pvm kysyPvm(Stage modalityStage, Pvm oletus) {
-        return ModalController.showModal(PaivakirjaGUIController.class.getResource("PvmDialogView.fxml"), "Pvm", modalityStage, oletus);
+        return ModalController.showModal(PaivakirjaGUIController.class.getResource("PvmDialogView.fxml"),
+                "Kayttaja", modalityStage, oletus);
         
     }
     

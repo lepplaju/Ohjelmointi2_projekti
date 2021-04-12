@@ -153,6 +153,14 @@ public class Pvm implements Cloneable {
         return uusi;
     }
     
+    public String setPvm(String tekstikentta) {
+        StringBuilder sb = new StringBuilder(tekstikentta);
+        this.pv = Mjonot.erota(sb, '.',pv);
+        this.kk = Mjonot.erota(sb, '.',kk);
+        this.vv = Mjonot.erota(sb, '.',vv);
+        return null;
+    }
+    
     /**Poimitaan pvm:n tiedot käyttöliittymään
      * @param rivi rivi tekstiä tiedostossa
      */
@@ -163,4 +171,6 @@ public class Pvm implements Cloneable {
         this.kk = Mjonot.erota(sb, '.',kk);
         this.vv = Mjonot.erota(sb, '.',vv);
     }
+
+
 }

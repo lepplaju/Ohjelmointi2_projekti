@@ -44,7 +44,7 @@ public class Urheilu {
      * @param paivaid mink‰ p‰iv‰m‰‰r‰n tietoja
      */
     public void taytaTiedot(int paivaid) {
-        this.klo = rand(6,21) + ";" + String.format("%02d",rand(0,59));
+        this.klo = rand(6,21) + ":" + String.format("%02d",rand(0,59));
         this.pvmNro = paivaid;
         this.lajiId = rand(1,8);
         this.suoritusaika = rand(0,2) +":" + rand(30,59);

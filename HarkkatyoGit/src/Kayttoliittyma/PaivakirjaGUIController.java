@@ -258,17 +258,18 @@ public class PaivakirjaGUIController implements Initializable{
      * Lis‰t‰‰n uusi P‰iv‰m‰‰r‰
      */
     protected void uusiPvm() {
-        Pvm uusi = new Pvm();
-        uusi.rekisteroi();
-        uusi.taytaTiedot();
         try {
+            Pvm uusi = new Pvm();
+            uusi = PvmDialogController.kysyPvm(null, uusi);
+            if(uusi==null) return;
+            uusi.rekisteroi();
             kayttaja.lisaa(uusi);
-        } catch (Exception e) {
-            Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
+            hae(uusi.getTunnusNro());
+        }catch(Exception e) {
+            Dialogs.showMessageDialog("uuden luomnen ep‰onnistui" + e);
             return;
         }
-        hae(uusi.getTunnusNro());
-    }  
+    }
     
     /**
      * Lis‰‰ uuden lajin
@@ -330,6 +331,8 @@ public class PaivakirjaGUIController implements Initializable{
         }
 
     }
+    
+    
 
     /**
      * @param os Tietovirta
