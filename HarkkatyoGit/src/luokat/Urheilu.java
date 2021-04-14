@@ -13,9 +13,10 @@ import luokat.Lajit;
  * @version 9.3.2021
  *
  */
-public class Urheilu {
+public class Urheilu implements Cloneable{
     
     private static int seuraavaNro =1;
+    
     private String klo;
     private int pvmNro;
     private int tunnusNro;
@@ -137,7 +138,115 @@ public class Urheilu {
     public int getLajiId() {
         return this.lajiId;
     }
-        
+
+    /** 
+     * @return Ensimmäinen sarake, joka on käyttäjälle näkyvissä
+     */
+    public int ekaKentta() {
+        return 2;
+    }
+
+    /**
+     * @return Sarakkeiden lukumäärä
+     */
+    public int getKenttia() {
+        return 8;
+    }
+
+    /** Hakee StringGridin tietyn kentän
+     * @param k minkä kentän kysymys halutaan
+     * @return kyseisen kentän otsikko
+     */
+    public String getKysymys(int k) {
+        switch (k) {
+        case 0:
+            return "id";
+        case 1:
+            return "pvmId";
+        case 2:
+            return "lajiId";
+        case 3:
+            return "klo";
+        case 4:
+            return "suoritusaika";
+        case 5: 
+            return "intensity";
+        case 6: 
+            return "tyytyvaisyys";
+        case 7: 
+            return "Muuta Lisättävää";
+        default:
+            return "???";
+    }
+
+    }
+    
+    @Override
+    public Urheilu clone() throws CloneNotSupportedException { 
+        return (Urheilu)super.clone();
+    }
 
 
+    /** asetetaan valitun kentän sisältö
+     * @param k minkä kentän sisältö
+     * @param s asetettava sisältö merkkijonona
+     * @return null jos ok, muuten virheteksti
+     */
+    public String aseta(int k, String s) {
+        String st = s.trim();
+        StringBuilder sb = new StringBuilder(st);
+        switch (k) {
+        case 0:
+            return "id";
+        case 1:
+            return "pvmId";
+        case 2:
+            return "lajiId";
+        case 3:
+            klo = st;
+            return "klo";
+        case 4:
+            suoritusaika = st;
+            return null;
+        case 5: 
+            intensity = Mjonot.erotaDouble(sb,0);
+            return null;
+        case 6: 
+            tyytyvaisyys = Mjonot.erotaDouble(sb,0);
+            return null;
+        case 7: 
+            muutaLisattavaa = st;
+            return null;
+        default:
+            return "Väärä kentän indeksi";  
+        }
+    }
+
+    /**
+     * @param k Minkä kentän sisältö halutaan
+     * @return valitun kentän sisältö
+     */
+    public String anna(int k) {
+        switch (k) {           
+        case 0:
+            return "" + tunnusNro;
+        case 1:
+            return "" +pvmNro;
+        case 2:
+            return "" + lajiId;
+        case 3:
+            return "" + klo;
+        case 4:
+            return "" + suoritusaika;
+        case 5: 
+            return "" + intensity;
+        case 6: 
+            return "" + tyytyvaisyys;
+        case 7: 
+            return "" + muutaLisattavaa;
+        default:
+            return "???";
+        }
+    }
+    
 }

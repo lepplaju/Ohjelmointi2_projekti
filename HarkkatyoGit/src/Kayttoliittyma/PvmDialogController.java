@@ -70,6 +70,9 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
 
     private Pvm pvmKohdalla;
     
+    /**
+     *  Alustaa dialogin
+     */
     protected void alusta() {
         editPaivays.setOnKeyReleased(e-> kasitteleMuutosPvm((TextField)(e.getSource())));
     }

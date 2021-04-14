@@ -55,18 +55,8 @@
    <padding>
       <Insets bottom="25.0" left="15.0" right="15.0" />
    </padding>
-   <right>
-      <StringGrid prefHeight="399.0" prefWidth="238.0" rivit="" BorderPane.alignment="CENTER">
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-         <BorderPane.margin>
-            <Insets left="5.0" />
-         </BorderPane.margin>
-      </StringGrid>
-   </right>
    <center>
-      <StringGrid fx:id="urheiluTable" prefHeight="400.0" prefWidth="615.0" rivit="Lajin Id|Klo|Suoritusaika|Intensiteetti" BorderPane.alignment="CENTER">
+      <StringGrid fx:id="urheiluTable" prefHeight="400.0" prefWidth="615.0" rivit="Lajin Id|Klo|Suoritusaika|Intensiteetti|Tyytyväisyys|Muuta Lisättävää" BorderPane.alignment="CENTER">
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>

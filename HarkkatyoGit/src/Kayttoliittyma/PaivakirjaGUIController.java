@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
@@ -54,11 +55,8 @@ public class PaivakirjaGUIController implements Initializable{
     }
 
     @FXML private void handleHakuehto() {
-        if (pvmKohdalla !=null )
-            hae(pvmKohdalla.getTunnusNro());
-        
-    }
-    
+        if (pvmKohdalla !=null ) hae(pvmKohdalla.getTunnusNro());       
+    }    
     
     @FXML private void HandleLopeta() {
         tallenna();
@@ -73,40 +71,36 @@ public class PaivakirjaGUIController implements Initializable{
         avaa();
     }
 
-
-    @FXML
-    void MuokkaaUrheilua(ActionEvent event) {
-        Dialogs.showMessageDialog("ei osata muokata urheilua viel‰");
+    @FXML private void MuokkaaUrheilua() {
+        muokkaaUrheilu();
     }
 
-    @FXML
-    void handleMuokkaaPvm(ActionEvent event) {
+    @FXML private void handleMuokkaaPvm() {
         muokkaaPvm();
     }
 
-    @FXML
-    void MuokkaaLajeja(ActionEvent event) {
+    @FXML private void MuokkaaLajeja() {
         Dialogs.showMessageDialog("ei osata muokata lajeja viel‰");
     }
 
-    @FXML
-    void UusiKentta(ActionEvent event) {
+    @FXML private void UusiKentta() {
         Dialogs.showMessageDialog("ei osata lis‰t‰ uutta kentt‰‰");
     }
 
-    @FXML
-    void HandleUusiPvm(ActionEvent event) {
+    @FXML private void HandleUusiPvm() {
         uusiPvm();
     }
 
-    @FXML
-    void HandleUusiUrheilu(ActionEvent event) {
+    @FXML private void HandleUusiUrheilu() {
         uusiUrheilu();
     }
     
-    @FXML
-    void HandleUusiLaji(ActionEvent event) {
+    @FXML private void HandleUusiLaji() {
         uusiLaji();
+    }
+    
+    @FXML private void HandlePoistaPvm() {
+        Dialogs.showMessageDialog("ei osata poistaa");
     }
     
     
@@ -116,6 +110,8 @@ public class PaivakirjaGUIController implements Initializable{
     private Kayttaja kayttaja = new Kayttaja();
     private Pvm pvmKohdalla;
     private String kayttajannimi="Late";
+    private static Urheilu apuUrheilu = new Urheilu();
+    Urheilu urhKohdalla;
 
     /**
      * Alustaa tiedot yhteen isoon tekstikentt‰‰n
@@ -126,8 +122,59 @@ public class PaivakirjaGUIController implements Initializable{
         chooserPvm.clear();
         chooserPvm.addSelectionListener(e -> naytaTiedot());
         
+     // alustetaan harrastustaulukon otsikot 
+        int eka = apuUrheilu.ekaKentta(); 
+        int lkm = apuUrheilu.getKenttia(); 
+        String[] headings = new String[lkm-eka]; 
+        for (int i=0, k=eka; k<lkm; i++, k++) headings[i] = apuUrheilu.getKysymys(k); 
+        urheiluTable.initTable(headings); 
+        urheiluTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
+        urheiluTable.setEditable(false); 
+        urheiluTable.setPlaceholder(new Label("Ei kirjattuja urheiluita t‰lle p‰iv‰lle")); 
+
     }
 
+    /**
+     * N‰ytt‰‰ urheilun tiedot p‰iv‰m‰‰r‰n kohdalla
+     */
+    protected void naytaTiedot() {
+        pvmKohdalla = chooserPvm.getSelectedObject();  
+        if (pvmKohdalla == null) return;
+        naytaUrheilut(pvmKohdalla);
+        
+        urheiluTable.setOnMouseClicked( e -> {
+        int r = urheiluTable.getRowNr();
+        urhKohdalla = urheiluTable.getObject(r);
+        if (  e.getClickCount() == 2)  muokkaaUrheilu();
+                });
+        
+    }
+    
+    private void naytaUrheilut(Pvm pvm) {
+        urheiluTable.clear();
+        if (pvm == null)return;
+        
+        try {
+            List<Urheilu> urheilut = kayttaja.annaUrheilut(pvm);
+            if (urheilut.size()==0) return;
+            for (Urheilu urh:urheilut) {
+                naytaUrheilu(urh);
+            }
+        } catch (Exception e) {
+            //
+        }
+              
+    }
+    
+    private void naytaUrheilu(Urheilu urh) {
+        int kenttia = urh.getKenttia();
+        String[] rivi = new String[kenttia-urh.ekaKentta()];
+        for (int i = 0, k=urh.ekaKentta(); k<kenttia; i++, k++) {
+            rivi[i] = urh.anna(k);
+        }        
+        urheiluTable.add(urh,rivi);
+    }    
+    
     private void naytaVirhe(String virhe) {
         if ( virhe == null || virhe.isEmpty() ) {
             labelVirhe.setText("");
@@ -182,39 +229,6 @@ public class PaivakirjaGUIController implements Initializable{
             if (uusi!=null)
                 cbLajit.add(uusi);    
         }
-        
-    }
-
-    
-    /**
-     * N‰ytt‰‰ urheilun tiedot p‰iv‰m‰‰r‰n kohdalla
-     */
-    protected void naytaTiedot() {
-        pvmKohdalla = chooserPvm.getSelectedObject();  
-        if (pvmKohdalla == null) return;
-        naytaUrheilut(pvmKohdalla);
-
-           
-    }
-    
-    private void naytaUrheilut(Pvm pvm) {
-        urheiluTable.clear();
-        if (pvm == null)return;
-        try {
-            List<Urheilu> urheilut = kayttaja.annaUrheilut(pvm);
-            if (urheilut.size()==0) return;
-            for (Urheilu urh:urheilut) {
-                naytaUrheilu(urh);
-            }
-        } catch (Exception e) {
-            //
-        }
-              
-    }
-    
-    private void naytaUrheilu(Urheilu urh) {
-        String[] rivi = urh.toString().split("\\|");
-        urheiluTable.add(urh,rivi[2],rivi[3],rivi[4],rivi[5]);
         
     }
 
@@ -332,6 +346,14 @@ public class PaivakirjaGUIController implements Initializable{
 
     }
     
+    /**
+     *  Avaa UrheiluDialogin ja sen sis‰ll‰ pystyt‰‰n muokkaamaan urheilun tietoja 
+     */
+    public void muokkaaUrheilu(){       
+        ModalController.showModal(UrheiluDialogController.class.getResource("UrheiluDialogView.fxml"),
+                "Urheilun muokkaaminen", null, urhKohdalla);
+        
+    }
     
 
     /**
