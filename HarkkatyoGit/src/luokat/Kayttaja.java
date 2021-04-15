@@ -164,9 +164,9 @@ public class Kayttaja {
     }
 
     /** 
-     * Palauttaa "taulukossa" hakuehtoon vastaavien jäsenten viitteet 
-     * @param hakuehto hakuehto 
-     * @return tietorakenteen löytyneistä jäsenistä 
+     * 
+     * @param hakuehto tekstinä
+     * @return listan päivämääristä, jotka vastaavat hakuehtoa
      * @throws SailoException Jos jotakin menee väärin
      */ 
     public Collection<Pvm> etsi(String hakuehto) throws SailoException { 

@@ -43,8 +43,8 @@ public class Pvmt implements Iterable<Pvm>{
      * paivamaaratX.lisaa(paiva11);
      * paivamaaratX.lisaa(paiva22);
      * paivamaaratX.getPvmLkm() ===2;
-     * paivamaaratX.annaPvm(1) === paiva11;
-     * paivamaaratX.annaPvm(2) === paiva22;
+     * paivamaaratX.annaPvm(paiva11.getTunnusNro()) === paiva11;
+     * paivamaaratX.annaPvm(paiva22.getTunnusNro()) === paiva22;
      * </pre>
      */
     public void lisaa(Pvm paiv) {
@@ -76,7 +76,6 @@ public class Pvmt implements Iterable<Pvm>{
     }
     
     /** 
-     * Palauttaa "taulukossa" hakuehtoon vastaavien jäsenten viitteet 
      * @param hakuehto hakuehto  
      * @return kaikki löytyneet päivämäärät
      */ 
@@ -89,8 +88,6 @@ public class Pvmt implements Iterable<Pvm>{
         return loytyneet; 
     }
 
-
-    
     /**
      * Palauttaa varakopiotiedoston nimen
      * @return varakopiotiedoston nimi
@@ -98,12 +95,47 @@ public class Pvmt implements Iterable<Pvm>{
     public String getBakNimi() {
         return tiedostonPerusNimi + ".bak";
     }
-
-
     
     /**
      * @param tied tiedoston nimi
      * @throws SailoException jos tiedoston lukeminen epäonnistuu
+     * 
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.*;
+     * #import java.util.*;
+     * 
+     *  Pvmt pvmt = new Pvmt();
+     *  Pvm paiva1 = new Pvm();
+     *  Pvm paiva2 = new Pvm();
+     *  paiva1.taytaTiedot();
+     *  paiva2.taytaTiedot();
+     *  paiva1.rekisteroi();
+     *  paiva2.rekisteroi();
+     *  String hakemisto = "testikayttaja";
+     *  String tiedNimi = hakemisto+"/pvmt";
+     *  File ftied = new File(tiedNimi+".dat");
+     *  File dir = new File(hakemisto);
+     *  dir.mkdir();
+     *  ftied.delete();
+     *  pvmt.lueTiedostosta(tiedNimi); #THROWS SailoException
+     *  pvmt.lisaa(paiva1);
+     *  pvmt.lisaa(paiva2);
+     *  pvmt.tallenna();
+     *  pvmt = new Pvmt();            // Poistetaan vanhat luomalla uusi
+     *  pvmt.lueTiedostosta(tiedNimi);  // johon ladataan tiedot tiedostosta.
+     *  Iterator<Pvm> i = pvmt.iterator();
+     *  i.next().equals(paiva1);
+     *  i.next().equals(paiva2);
+     *  i.hasNext() === false;
+     *  pvmt.lisaa(paiva2);
+     *  pvmt.tallenna();
+     *  ftied.delete() === true;
+     *  File fbak = new File(tiedNimi+".bak");
+     *  fbak.delete() === true;
+     *  dir.delete() === true;
+     * </pre>
      */
     public void lueTiedostosta(String tied) throws SailoException {
         setTiedostonPerusNimi(tied);
@@ -130,7 +162,6 @@ public class Pvmt implements Iterable<Pvm>{
     }
     
     /**
-     * Tallentaa jäsenistön tiedostoon.  Kesken.
      * Luetaan aikaisemmin annetun nimisestä tiedostosta
      * @throws SailoException jos tulee poikkeus
      */
@@ -154,8 +185,6 @@ public class Pvmt implements Iterable<Pvm>{
         lisaa(pvm);
         }
         
-    
-
     /**Asettaa tiedoston nimen
      * @param nimi parametrina
      */

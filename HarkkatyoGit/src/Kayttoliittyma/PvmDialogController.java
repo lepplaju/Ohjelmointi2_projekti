@@ -77,12 +77,20 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
         editPaivays.setOnKeyReleased(e-> kasitteleMuutosPvm((TextField)(e.getSource())));
     }
     
+    /**
+     * N‰ytt‰‰ p‰iv‰m‰‰r‰n muokkausikkunassa
+     * @param pvm mik‰ p‰iv‰m‰‰r‰ on kyseess‰
+     */
     private void naytaPvm(Pvm pvm) {
         if (pvm == null) return;
         editPaivays.setText(pvm.getPaivays());
         kasitteleMuutosPvm(editPaivays);
     }
     
+    /**
+     * TODO: tarkistaa oikeellisen syntaksin
+     * @param virhe teksti, joka halutaan n‰ytt‰‰ k‰ytt‰j‰lle
+     */
     private void naytaVirhe(String virhe) {
         if ( virhe == null || virhe.isEmpty() ) {
             labelVirhe.setText("");
@@ -93,6 +101,10 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
         labelVirhe.getStyleClass().add("virhe");
     }
 
+    /**
+     * Asettaa p‰iv‰m‰‰r‰lle uuden arvon
+     * @param edit muutoskent‰n sis‰ltˆ
+     */
     private void kasitteleMuutosPvm(TextField edit) {
         if (pvmKohdalla == null) return;
         String s = edit.getText();

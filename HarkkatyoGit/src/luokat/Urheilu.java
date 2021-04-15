@@ -55,6 +55,18 @@ public class Urheilu implements Cloneable{
     }
     
     /**
+     * T‰ytt‰‰ tiedot Urheiluun ilman yhteytt‰ mihink‰‰n p‰iv‰m‰‰r‰‰n
+     */
+    public void taytaTiedot() {
+        this.klo = rand(6,21) + ":" + String.format("%02d",rand(0,59));
+        this.lajiId = rand(1,8);
+        this.suoritusaika = rand(0,2) +":" + rand(30,59);
+        this.intensity = rand(5, 10);
+        this.tyytyvaisyys = rand(5, 10);
+        this.muutaLisattavaa ="*muuta lis‰tt‰v‰‰";
+    }
+    
+    /**
      * antaa urheilulle tunnusnumeron
      * @example
      * <pre name="test">
@@ -107,7 +119,7 @@ public class Urheilu implements Cloneable{
     @Override
     public String toString() {
         return "" + getTunnusNro() + "|" + pvmNro + "|" + lajiId + "|" + klo + "|" + suoritusaika 
-                + "|" + intensity + "|" + tyytyvaisyys;
+                + "|" + intensity + "|" + tyytyvaisyys  + "|" + muutaLisattavaa;
     }
 
     /**Asettaa urheilun tunnusnumeron
@@ -201,10 +213,11 @@ public class Urheilu implements Cloneable{
         case 1:
             return "pvmId";
         case 2:
-            return "lajiId";
+            lajiId=Mjonot.erotaInt(sb,0);
+            return null;
         case 3:
             klo = st;
-            return "klo";
+            return null;
         case 4:
             suoritusaika = st;
             return null;

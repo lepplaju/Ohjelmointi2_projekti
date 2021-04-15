@@ -37,8 +37,8 @@ import java.util.ResourceBundle;
 
 /**
  * @author Lepplaju
- * @version 9.3.2021
- *
+ * @version 15.4.2021
+ * Tyˆ 7
  */
 public class PaivakirjaGUIController implements Initializable{
       
@@ -114,7 +114,8 @@ public class PaivakirjaGUIController implements Initializable{
     Urheilu urhKohdalla;
 
     /**
-     * Alustaa tiedot yhteen isoon tekstikentt‰‰n
+     * Alustaa  p‰iv‰m‰‰rien tiedot omaan listaan ja 
+     * urheilujen tiedot tiedot StringGridiin
      */
     protected void alusta() {
         panelTiedot.setFitToHeight(true);
@@ -135,7 +136,9 @@ public class PaivakirjaGUIController implements Initializable{
     }
 
     /**
-     * N‰ytt‰‰ urheilun tiedot p‰iv‰m‰‰r‰n kohdalla
+     * N‰ytt‰‰ p‰iv‰m‰‰r‰‰n kuuluvat urheilut ja
+     * kuuntelee hiirt‰ ja jos jotakin urheilua tuplaklikataan, avaa muokkausikkunan 
+     * 
      */
     protected void naytaTiedot() {
         pvmKohdalla = chooserPvm.getSelectedObject();  
@@ -150,6 +153,10 @@ public class PaivakirjaGUIController implements Initializable{
         
     }
     
+    /**
+     * N‰ytt‰‰ tietyn p‰iv‰n urheilut
+     * @param pvm tietty p‰iv‰m‰‰r‰
+     */
     private void naytaUrheilut(Pvm pvm) {
         urheiluTable.clear();
         if (pvm == null)return;
@@ -166,6 +173,10 @@ public class PaivakirjaGUIController implements Initializable{
               
     }
     
+    /**
+     * N‰ytt‰‰ yksitt‰isen urheilun ja lis‰‰ tiedot automaattisesti StringGridiin
+     * @param urh yksitt‰inen urheilu
+     */
     private void naytaUrheilu(Urheilu urh) {
         int kenttia = urh.getKenttia();
         String[] rivi = new String[kenttia-urh.ekaKentta()];
@@ -175,6 +186,10 @@ public class PaivakirjaGUIController implements Initializable{
         urheiluTable.add(urh,rivi);
     }    
     
+    /**
+     * N‰ytt‰‰ poikkeavan syntaksin
+     * @param virhe aputeksti, joka halutaan n‰ytt‰‰ ruudulla
+     */
     private void naytaVirhe(String virhe) {
         if ( virhe == null || virhe.isEmpty() ) {
             labelVirhe.setText("");
@@ -185,12 +200,16 @@ public class PaivakirjaGUIController implements Initializable{
         labelVirhe.getStyleClass().add("virhe");
     }
     
+    /**
+     * Asettaa nimen ikkunalle
+     * @param title ikkunan palkissa n‰kyv‰ teksti
+     */
     private void setTitle(String title) {
         ModalController.getStage(hakuehto).setTitle(title);
     }
    
     
-    /**
+    /**Luetaan tallennettu tiedosto ensimm‰iseen ikkunaan annetun nimen perusteella
      * @param nimi Lukee tiedoston
      * @return Palauttaa vireheen tai ei mit‰‰n
      */
@@ -232,6 +251,10 @@ public class PaivakirjaGUIController implements Initializable{
         
     }
 
+    /**
+     * Tallentaa tiedoston 
+     * @return vain jos tapahtuu jokin virhe
+     */
     private String tallenna() {
         try {
             kayttaja.tallenna();
@@ -269,7 +292,7 @@ public class PaivakirjaGUIController implements Initializable{
     }
     
     /**
-     * Lis‰t‰‰n uusi P‰iv‰m‰‰r‰
+     * Loudaan uusi P‰iv‰m‰‰r‰
      */
     protected void uusiPvm() {
         try {
@@ -302,7 +325,7 @@ public class PaivakirjaGUIController implements Initializable{
     }
     
     /** 
-     * Tekee uuden tyhj‰n harrastuksen editointia varten 
+     * Tekee uuden tyhj‰n urheilun editointia varten 
      */ 
     public void uusiUrheilu() { 
         if ( pvmKohdalla == null ) return;  
@@ -318,7 +341,7 @@ public class PaivakirjaGUIController implements Initializable{
     }
     
     /**
-     * @param kayttaja k‰ytt‰j‰ jota k‰ytet‰‰n t‰ss‰ k‰yttˆliittym‰ss‰
+     * @param kayttaja jota k‰ytet‰‰n t‰ss‰ k‰yttˆliittym‰ss‰
      */
     public void setKayttaja(Kayttaja kayttaja) {
         this.kayttaja = kayttaja;
@@ -351,8 +374,8 @@ public class PaivakirjaGUIController implements Initializable{
      */
     public void muokkaaUrheilu(){       
         ModalController.showModal(UrheiluDialogController.class.getResource("UrheiluDialogView.fxml"),
-                "Urheilun muokkaaminen", null, urhKohdalla);
-        
+                "Urheilun muokkaaminen", null, urhKohdalla);        
+        hae(pvmKohdalla.getTunnusNro());
     }
     
 

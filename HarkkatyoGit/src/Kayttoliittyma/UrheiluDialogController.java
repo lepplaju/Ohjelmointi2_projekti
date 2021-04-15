@@ -31,17 +31,21 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
     }
     
     @FXML private void handleOK() {
+        if ( urhKohdalla != null && urhKohdalla.getLajiId() == 0) {
+            naytaVirhe("Anna joku Laji");
+            return;
+        }
         ModalController.closeStage(labelVirhe);
     }
 
     @FXML private void handleCancel() {
+        urhKohdalla = null;
         ModalController.closeStage(labelVirhe);
     }
 
     @Override
     public Urheilu getResult() {
-        // TODO Auto-generated method stub
-        return null;
+        return urhKohdalla;
     }
 
     @Override
@@ -63,7 +67,9 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
     private static Urheilu apuUrheilu = new Urheilu();
     private int kentta = 0;
     
-    
+    /**
+     * Luo kentät
+     */
     private void alusta() {
         edits = luoKentat(gridUrheilu);
         for (TextField edit : edits)
@@ -72,7 +78,7 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
     }
     
     /**
-     * Käsitellään jäseneen tullut muutos
+     * Käsitellään urheiluun tullut muutos
      * @param edit muuttunut kenttä
      */
     protected void kasitteleMuutosUrheiluun(TextField edit) {
@@ -92,6 +98,10 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
         }
     }
     
+    /**
+     * Käyttäjälle näkyvä virheteksti jos syötetään vääränlainen teksti kenttään
+     * @param virhe käyttäjälle näkyvä teksti
+     */
     private void naytaVirhe(String virhe) {
         if ( virhe == null || virhe.isEmpty() ) {
             labelVirhe.setText("");
@@ -116,27 +126,27 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
     }
     
     /**
-     * Luodaan GridPaneen jäsenen tiedot
-     * @param gridJasen mihin tiedot luodaan
+     * Luodaan GridPaneen urheilun tiedot
+     * @param gridUrheilu mihin tiedot luodaan
      * @return luodut tekstikentät
      */
-    public static TextField[] luoKentat(GridPane gridJasen) {
-        gridJasen.getChildren().clear();
+    public static TextField[] luoKentat(GridPane gridUrheilu) {
+        gridUrheilu.getChildren().clear();
         TextField[] edits = new TextField[apuUrheilu.getKenttia()];
         
         for (int i=0, k = apuUrheilu.ekaKentta(); k < apuUrheilu.getKenttia(); k++, i++) {
             Label label = new Label(apuUrheilu.getKysymys(k));
-            gridJasen.add(label, 0, i);
+            gridUrheilu.add(label, 0, i);
             TextField edit = new TextField();
             edits[k] = edit;
             edit.setId("e"+k);
-            gridJasen.add(edit, 1, i);
+            gridUrheilu.add(edit, 1, i);
         }
         return edits;
     }
     
     /**
-     * Näytetään jäsenen tiedot TextField komponentteihin
+     * Näytetään Urheilun tiedot TextField komponentteihin
      * @param edits taulukko TextFieldeistä johon näytetään
      * @param urh näytettävä urheilu
      */

@@ -79,6 +79,7 @@ public class Urheilut implements Iterable<Urheilu> {
      * Palauttaa varakopiotiedoston nimen
      * @return varakopiotiedoston nimi
      */
+
     public String getBakNimi() {
         return tiedostonPerusNimi + ".bak";
     }
@@ -86,6 +87,43 @@ public class Urheilut implements Iterable<Urheilu> {
     /**
      * @param tied tiedoston nimi
      * @throws SailoException jos tiedoston lukeminen epäonnistuu
+     * 
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.*;
+     * #import java.util.*;
+     * 
+     *  Urheilut urheilut = new Urheilut();
+     *  Urheilu urh1 = new Urheilu();
+     *  Urheilu urh2 = new Urheilu();
+     *  urh1.taytaTiedot();
+     *  urh2.taytaTiedot();
+     *  urh1.rekisteroi();
+     *  urh2.rekisteroi();
+     *  String hakemisto = "testikayttaja";
+     *  String tiedNimi = hakemisto+"/urheilut";
+     *  File ftied = new File(tiedNimi+".dat");
+     *  File dir = new File(hakemisto);
+     *  dir.mkdir();
+     *  ftied.delete();
+     *  urheilut.lueTiedostosta(tiedNimi); #THROWS SailoException
+     *  urheilut.lisaa(urh1);
+     *  urheilut.lisaa(urh2);
+     *  urheilut.tallenna();
+     *  urheilut = new Urheilut();            // Poistetaan vanhat luomalla uusi
+     *  urheilut.lueTiedostosta(tiedNimi);  // johon ladataan tiedot tiedostosta.
+     *  Iterator<Urheilu> i = urheilut.iterator();
+     *  i.next().toString() === urh1.toString();
+     *  i.next().toString() === urh2.toString();
+     *  i.hasNext() === false;
+     *  urheilut.lisaa(urh2);
+     *  urheilut.tallenna();
+     *  ftied.delete() === true;
+     *  File fbak = new File(tiedNimi+".bak");
+     *  fbak.delete() === true;
+     *  dir.delete() === true;
+     * </pre>
      */
     public void lueTiedostosta(String tied) throws SailoException {
         setTiedostonPerusNimi(tied);
@@ -109,7 +147,6 @@ public class Urheilut implements Iterable<Urheilu> {
     }
     
     /**
-     * Tallentaa jäsenistön tiedostoon.  Kesken.
      * Luetaan aikaisemmin annetun nimisestä tiedostosta
      * @throws SailoException jos tulee poikkeus
      */
@@ -154,7 +191,6 @@ public class Urheilut implements Iterable<Urheilu> {
         ftied.renameTo(fbak); // if .. System.err.println("Ei voi nimetä");
 
         try ( PrintWriter fo = new PrintWriter(new FileWriter(ftied.getCanonicalPath())) ) {
-            fo.println(alkiot.size());
             for (Urheilu urh : this) {
                 fo.println(urh.toString());
             }
