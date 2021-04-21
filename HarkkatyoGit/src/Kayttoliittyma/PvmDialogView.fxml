@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="213.0" prefWidth="342.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Kayttoliittyma.PvmDialogController">
+<BorderPane stylesheets="@paivakirja.css" prefHeight="213.0" prefWidth="342.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Kayttoliittyma.PvmDialogController">
    <center>
       <VBox alignment="BOTTOM_RIGHT" prefHeight="221.0" prefWidth="344.0" BorderPane.alignment="CENTER">
          <children>

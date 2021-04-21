@@ -41,7 +41,7 @@
           <Menu mnemonicParsing="false" text="Tallenna">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#HandleTallenna" text="Tallenna" />
-                  <MenuItem mnemonicParsing="false" onAction="#HandleLopeta" text="Lopeta" />
+                  <MenuItem mnemonicParsing="false" onAction="#HandleLopeta" text="Tallenna & Lopeta" />
             </items>
           </Menu>
         </menus>

@@ -20,7 +20,7 @@ public class Urheilu implements Cloneable{
     private String klo;
     private int pvmNro;
     private int tunnusNro;
-    private int lajiId=1;
+    private int lajiId;
     private String suoritusaika;
     private double intensity;
     private double tyytyvaisyys;
@@ -270,6 +270,11 @@ public class Urheilu implements Cloneable{
     public String setKlo(String s) {
         klo = s;
         return null;
+    }
+
+    public void setPvmId(Pvm pvm) {
+        pvmNro=pvm.getTunnusNro();
+        
     }
     
 }

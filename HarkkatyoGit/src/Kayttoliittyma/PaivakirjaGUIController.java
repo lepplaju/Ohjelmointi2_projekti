@@ -277,8 +277,8 @@ public class PaivakirjaGUIController implements Initializable{
      * @return true jos saa sulkea sovelluksen, false jos ei
      */
     public boolean voikoSulkea() {
-        tallenna();
-        return true;
+        boolean vastaus = Dialogs.showQuestionDialog("Sulkeminen", "Sulje ilman tallentamista?", "Sulje", "Peruuta");
+        return vastaus;
     }
     
     /**Hakee t‰m‰n p‰iv‰m‰‰r‰n tiedot listaan
@@ -340,13 +340,18 @@ public class PaivakirjaGUIController implements Initializable{
      */ 
     public void uusiUrheilu() { 
         if ( pvmKohdalla == null ) return;  
-        Urheilu urh = new Urheilu();  
-        Urheilu muokattu = ModalController.showModal(UrheiluDialogController.class.getResource("UrheiluDialogView.fxml"),
-                "Uusi Urheilukirjaus", null, urh);      
-        if (muokattu == null)return;
-        kayttaja.korvaaTaiLisaa(muokattu);
-        hae(pvmKohdalla.getTunnusNro());    
+        try {
+            Urheilu uusi = new Urheilu(pvmKohdalla.getTunnusNro());
+            uusi = UrheiluDialogController.kysyUrheilu(null,uusi); 
+            if (uusi ==null)return;
+            uusi.rekisteroi();
+            kayttaja.lisaa(uusi);
+            hae(0);
+        } catch (Exception e) {
+            Dialogs.showMessageDialog("Lis‰‰minen ep‰onnistui: " + e.getMessage());
+        }
     }
+       
     
     /**
      *  Avaa UrheiluDialogin ja sen sis‰ll‰ pystyt‰‰n muokkaamaan urheilun tietoja 
@@ -357,7 +362,6 @@ public class PaivakirjaGUIController implements Initializable{
         Urheilu muokattu = ModalController.showModal(UrheiluDialogController.class.getResource("UrheiluDialogView.fxml"),
                 "Urheilun muokkaaminen", null, urh);        
         if (muokattu == null)return;
-        muokattu.rekisteroi();
         kayttaja.korvaaTaiLisaa(muokattu);
         hae(pvmKohdalla.getTunnusNro());
         } catch(CloneNotSupportedException e) {

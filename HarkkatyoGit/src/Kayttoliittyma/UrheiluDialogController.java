@@ -38,6 +38,7 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
             naytaVirhe("Anna joku Laji");
             return;
         }
+        palautettava=urhKohdalla;
         ModalController.closeStage(labelVirhe);
     }
 
@@ -48,12 +49,12 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
 
     @Override
     public Urheilu getResult() {
-        return urhKohdalla;
+        return palautettava;
     }
 
     @Override
     public void handleShown() {
-        kentta = Math.max(urhKohdalla.ekaKentta(), Math.min(kentta, urhKohdalla.getKenttia()-1));
+        kentta = Math.max(apuUrheilu.ekaKentta(), Math.min(kentta, apuUrheilu.getKenttia()-1));
         edits[kentta].requestFocus();
     }
       
@@ -68,6 +69,7 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
     private Urheilu urhKohdalla;
     private TextField[] edits;
     private static Urheilu apuUrheilu = new Urheilu();
+    private Urheilu palautettava;
     private int kentta = 0;
     
     /**
@@ -158,13 +160,12 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
     public static void naytaUrheilu(TextField[] edits, Urheilu urh) {
         if (urh == null) return;
         for (int k = urh.ekaKentta(); k < urh.getKenttia(); k++) {
-            if(urh.anna(k).equals("")||urh.anna(k)==null||urh.anna(k).equals("0.0")) edits[k].setText("");
-            else edits[k].setText(urh.anna(k));
-            }       
+            if(urh.anna(k).equals("null")) continue; 
+            if(urh.anna(k).equals("0.0")) continue;
+            edits[k].setText(urh.anna(k));
+                
+            }      
     }
-
-
-    
     
     /** Palautetaan uusi Urheilu, jos on painettu OK
      * @param modalityStage mille ollaan modaalisia
@@ -173,7 +174,7 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
      */
     public static Urheilu kysyUrheilu(Stage modalityStage, Urheilu oletus) {
         return ModalController.showModal(UrheiluDialogController.class.getResource("UrheiluDialogView.fxml"),
-                "Kayttaja", modalityStage, oletus);
+                "Uusi Urheilukirjaus", modalityStage, oletus);
     }
 
 

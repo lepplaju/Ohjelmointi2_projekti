@@ -23,7 +23,6 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
     @FXML private Label labelVirhe;
     @FXML private TextField editPaivays;
     
-    
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
         alusta();  
@@ -36,24 +35,21 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
         String virhe=pvmKohdalla.aseta(editPaivays.getText());
         if (pvmKohdalla != null && pvmKohdalla.getPaivays().trim().equals("")) {
                 naytaVirhe("ei saa olla tyhj‰");
-                return;
-
-                
+                return;           
         }
-        if (virhe==null) ModalController.closeStage(labelVirhe);
+        if (virhe==null) palautettava=pvmKohdalla; ModalController.closeStage(labelVirhe);
     }
     
     /**
      * Mit‰ tapahtuu kun painetaan cancel
      */
     @FXML public void handleCancel() {
-        pvmKohdalla = null;
         ModalController.closeStage(labelVirhe);
     }
 
     @Override
     public Pvm getResult() {       
-        return pvmKohdalla;
+        return palautettava;
     }
 
     @Override
@@ -72,6 +68,7 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
     //====================================================
 
     private Pvm pvmKohdalla;
+    private Pvm palautettava;
     
     /**
      *  Alustaa dialogin
@@ -85,14 +82,11 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
      * @param pvm mik‰ p‰iv‰m‰‰r‰ on kyseess‰
      */
     private void naytaPvm(Pvm pvm) {
-        if (pvm == null) return;
-        editPaivays.setText(pvm.getPaivays());
+        if (pvm.getTunnusNro() != 0)
+            editPaivays.setText(pvm.getPaivays());
+        else editPaivays.clear();
     }
     
-    /**
-     * TODO: tarkistaa oikeellisen syntaksin
-     * @param virhe teksti, joka halutaan n‰ytt‰‰ k‰ytt‰j‰lle
-     */
     /**
      * N‰ytt‰‰ poikkeavan syntaksin
      * @param virhe aputeksti, joka halutaan n‰ytt‰‰ ruudulla
