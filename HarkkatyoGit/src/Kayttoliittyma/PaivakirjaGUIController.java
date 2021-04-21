@@ -78,6 +78,14 @@ public class PaivakirjaGUIController implements Initializable{
     @FXML private void handleMuokkaaPvm() {
         muokkaaPvm();
     }
+    
+    @FXML private void handlePoistaPvm() {
+        poistaPvm();
+    }
+    
+    @FXML private void handlePoistaUrheilu() {
+        poistaUrheilu();
+    }
 
     @FXML private void MuokkaaLajeja() {
         Dialogs.showMessageDialog("ei osata muokata lajeja viel‰");
@@ -98,10 +106,7 @@ public class PaivakirjaGUIController implements Initializable{
     @FXML private void HandleUusiLaji() {
         uusiLaji();
     }
-    
-    @FXML private void HandlePoistaPvm() {
-        Dialogs.showMessageDialog("ei osata poistaa");
-    }
+
     
     
 //===========================================================================================
@@ -118,7 +123,6 @@ public class PaivakirjaGUIController implements Initializable{
      * urheilujen tiedot tiedot StringGridiin
      */
     protected void alusta() {
-        panelTiedot.setFitToHeight(true);
         
         chooserPvm.clear();
         chooserPvm.addSelectionListener(e -> naytaTiedot());
@@ -144,6 +148,10 @@ public class PaivakirjaGUIController implements Initializable{
         pvmKohdalla = chooserPvm.getSelectedObject();  
         if (pvmKohdalla == null) return;
         naytaUrheilut(pvmKohdalla);
+        
+        chooserPvm.setOnMouseClicked(e->{
+        if (  e.getClickCount() == 2) muokkaaPvm();
+        });
         
         urheiluTable.setOnMouseClicked( e -> {
         int r = urheiluTable.getRowNr();
@@ -206,8 +214,7 @@ public class PaivakirjaGUIController implements Initializable{
      */
     private void setTitle(String title) {
         ModalController.getStage(hakuehto).setTitle(title);
-    }
-   
+    } 
     
     /**Luetaan tallennettu tiedosto ensimm‰iseen ikkunaan annetun nimen perusteella
      * @param nimi Lukee tiedoston
@@ -273,8 +280,6 @@ public class PaivakirjaGUIController implements Initializable{
         tallenna();
         return true;
     }
-
-
     
     /**Hakee t‰m‰n p‰iv‰m‰‰r‰n tiedot listaan
      * @param pvmId mik‰ on p‰iv‰n id
@@ -286,7 +291,7 @@ public class PaivakirjaGUIController implements Initializable{
         for (int i = 0; i < kayttaja.getEriPaivat(); i++) {
             Pvm pvm = kayttaja.annaPvm(i);
             if (pvm.getTunnusNro() == pvmId) index = i;
-            chooserPvm.add(pvm.toString(), pvm);
+            chooserPvm.add(pvm.getPaivays(), pvm);
         }
         chooserPvm.setSelectedIndex(index); // t‰st‰ tulee muutosviesti joka n‰ytt‰‰ j‰senen
     }
@@ -308,45 +313,6 @@ public class PaivakirjaGUIController implements Initializable{
         }
     }
     
-    /**
-     * Lis‰‰ uuden lajin
-     */
-    public void uusiLaji() {
-        Laji uusi = new Laji();
-        uusi.rekisteroi();
-        uusi.taytaTiedot();       
-        try {
-            kayttaja.lisaa(uusi);
-        } catch (Exception e) {
-            Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
-            return;
-        }
-        cbLajit.add(uusi);
-    }
-    
-    /** 
-     * Tekee uuden tyhj‰n urheilun editointia varten 
-     */ 
-    public void uusiUrheilu() { 
-        if ( pvmKohdalla == null ) return;  
-        Urheilu urh = new Urheilu();  
-        urh.rekisteroi();  
-        urh.taytaTiedot(pvmKohdalla.getTunnusNro());  
-        try {
-            kayttaja.lisaa(urh);
-        } catch (Exception e) {
-            Dialogs.showMessageDialog("Ongelmia lis‰‰misess‰! " + e.getMessage());
-        } 
-        hae(pvmKohdalla.getTunnusNro());          
-    }
-    
-    /**
-     * @param kayttaja jota k‰ytet‰‰n t‰ss‰ k‰yttˆliittym‰ss‰
-     */
-    public void setKayttaja(Kayttaja kayttaja) {
-        this.kayttaja = kayttaja;
-        naytaTiedot();
-    }
 
     /**
      * Avaa PvmDialogin ja sen sis‰ll‰ pystyt‰‰n muokkaamaan p‰iv‰m‰‰r‰‰
@@ -369,15 +335,60 @@ public class PaivakirjaGUIController implements Initializable{
 
     }
     
+    /** 
+     * Tekee uuden tyhj‰n urheilun editointia varten 
+     */ 
+    public void uusiUrheilu() { 
+        if ( pvmKohdalla == null ) return;  
+        Urheilu urh = new Urheilu();  
+        Urheilu muokattu = ModalController.showModal(UrheiluDialogController.class.getResource("UrheiluDialogView.fxml"),
+                "Uusi Urheilukirjaus", null, urh);      
+        if (muokattu == null)return;
+        kayttaja.korvaaTaiLisaa(muokattu);
+        hae(pvmKohdalla.getTunnusNro());    
+    }
+    
     /**
      *  Avaa UrheiluDialogin ja sen sis‰ll‰ pystyt‰‰n muokkaamaan urheilun tietoja 
      */
-    public void muokkaaUrheilu(){       
-        ModalController.showModal(UrheiluDialogController.class.getResource("UrheiluDialogView.fxml"),
-                "Urheilun muokkaaminen", null, urhKohdalla);        
+    public void muokkaaUrheilu() {
+        try {
+        Urheilu urh = urhKohdalla.clone();
+        Urheilu muokattu = ModalController.showModal(UrheiluDialogController.class.getResource("UrheiluDialogView.fxml"),
+                "Urheilun muokkaaminen", null, urh);        
+        if (muokattu == null)return;
+        muokattu.rekisteroi();
+        kayttaja.korvaaTaiLisaa(muokattu);
         hae(pvmKohdalla.getTunnusNro());
+        } catch(CloneNotSupportedException e) {
+            //
+        }
     }
     
+    /**
+     * Lis‰‰ uuden lajin
+     */
+    public void uusiLaji() {
+        Laji uusi = new Laji();
+        uusi.rekisteroi();
+        uusi.taytaTiedot();       
+        try {
+            kayttaja.lisaa(uusi);
+        } catch (Exception e) {
+            Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
+            return;
+        }
+        cbLajit.add(uusi);
+    }
+
+       
+    /**
+     * @param kayttaja jota k‰ytet‰‰n t‰ss‰ k‰yttˆliittym‰ss‰
+     */
+    public void setKayttaja(Kayttaja kayttaja) {
+        this.kayttaja = kayttaja;
+        naytaTiedot();
+    }
 
     /**
      * @param os Tietovirta
@@ -395,5 +406,22 @@ public class PaivakirjaGUIController implements Initializable{
             Dialogs.showMessageDialog("ERROR" + ex.getMessage());
         }
     }
+    
+    
+    private void poistaPvm() {
+       Pvm pvm = pvmKohdalla;
+        if(pvm==null)return;
+        if(!Dialogs.showQuestionDialog("Poisto", "Poistetaanko Pvm ja sen sis‰ll‰ olevat tiedot: "
+                + pvm.getPaivays(),"kyll‰", "ei")) return;
+        kayttaja.poistaPvm(pvm);
+        int index = chooserPvm.getSelectedIndex();
+        hae(0);
+        chooserPvm.setSelectedIndex(index);    
+    }
+    
+   private void poistaUrheilu() {
+       // TODO Auto-generated method stub
+       
+   }
 
 }

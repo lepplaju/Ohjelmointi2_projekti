@@ -3,6 +3,7 @@ package Kayttoliittyma;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
 import javafx.fxml.FXML;
@@ -28,16 +29,18 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
         alusta();  
     }
 
-    
     /**
      * Mit‰ tapahtuu kun painetaan ok
      */
     @FXML public void handleOK() {
+        String virhe=pvmKohdalla.aseta(editPaivays.getText());
         if (pvmKohdalla != null && pvmKohdalla.getPaivays().trim().equals("")) {
                 naytaVirhe("ei saa olla tyhj‰");
                 return;
+
+                
         }
-        ModalController.closeStage(labelVirhe);
+        if (virhe==null) ModalController.closeStage(labelVirhe);
     }
     
     /**
@@ -84,12 +87,15 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
     private void naytaPvm(Pvm pvm) {
         if (pvm == null) return;
         editPaivays.setText(pvm.getPaivays());
-        kasitteleMuutosPvm(editPaivays);
     }
     
     /**
      * TODO: tarkistaa oikeellisen syntaksin
      * @param virhe teksti, joka halutaan n‰ytt‰‰ k‰ytt‰j‰lle
+     */
+    /**
+     * N‰ytt‰‰ poikkeavan syntaksin
+     * @param virhe aputeksti, joka halutaan n‰ytt‰‰ ruudulla
      */
     private void naytaVirhe(String virhe) {
         if ( virhe == null || virhe.isEmpty() ) {
@@ -99,7 +105,7 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
         }
         labelVirhe.setText(virhe);
         labelVirhe.getStyleClass().add("virhe");
-    }
+    }   
 
     /**
      * Asettaa p‰iv‰m‰‰r‰lle uuden arvon
@@ -109,12 +115,16 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
         if (pvmKohdalla == null) return;
         String s = edit.getText();
         String virhe = null;
-        virhe = pvmKohdalla.setPvm(s);
+        virhe = pvmKohdalla.aseta(s);
         if (virhe==null) {
+            Dialogs.setToolTipText(edit,"");
+            edit.getStyleClass().removeAll("virhe");
             naytaVirhe(virhe);
-        }
-        else {
+        } else {
+            Dialogs.setToolTipText(edit,virhe);
+            edit.getStyleClass().add("virhe");
             naytaVirhe(virhe);
+
         }
     }
     
@@ -128,5 +138,6 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
                 "Kayttaja", modalityStage, oletus);
         
     }
+
     
 }

@@ -261,5 +261,15 @@ public class Urheilu implements Cloneable{
             return "???";
         }
     }
+
+    public String setlajiId(String s) {      
+        lajiId =Mjonot.erotaInt(s,0);
+        return null;
+    }
+
+    public String setKlo(String s) {
+        klo = s;
+        return null;
+    }
     
 }

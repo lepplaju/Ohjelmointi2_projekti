@@ -17,10 +17,11 @@
                <children>
                   <TextField fx:id="editPaivays" alignment="CENTER" prefHeight="25.0" prefWidth="219.0" />
                </children></HBox>
+            <Label fx:id="labelVirhe" prefHeight="17.0" prefWidth="300.0" />
             <ButtonBar pickOnBounds="false" prefHeight="63.0" prefWidth="344.0">
               <buttons>
-                  <Button minWidth="60.0" mnemonicParsing="false" onAction="#handleOK" text="OK" />
                   <Button minWidth="60.0" mnemonicParsing="false" onAction="#handleCancel" text="Peruuta" />
+                  <Button minWidth="60.0" mnemonicParsing="false" onAction="#handleOK" text="OK" />
               </buttons>
             </ButtonBar>
          </children>
@@ -33,7 +34,7 @@
       </VBox>
    </center>
    <top>
-      <Label fx:id="labelVirhe" text="Anna Päivämäärä" BorderPane.alignment="CENTER">
+      <Label text="Anna Päivämäärä" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets top="20.0" />
          </BorderPane.margin>

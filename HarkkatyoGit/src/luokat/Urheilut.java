@@ -21,7 +21,7 @@ public class Urheilut implements Iterable<Urheilu> {
 
     private boolean muutettu = false;
     private String tiedostonPerusNimi = "";
-    private Collection<Urheilu> alkiot = new ArrayList<Urheilu>();
+    private List<Urheilu> alkiot = new ArrayList<Urheilu>();
     
     /**antaa kaikki urheilut tietylt‰ p‰iv‰m‰‰r‰lt‰
      * @param pvmTunnusNro p‰iv‰m‰‰r‰n tunnusnumero
@@ -166,7 +166,6 @@ public class Urheilut implements Iterable<Urheilu> {
      * Palauttaa tiedoston nimen, jota k‰ytet‰‰n tallennukseen
      * @return tallennustiedoston nimi
      */
-
     public String getTiedostonNimi() {
         return getTiedostonPerusNimi() + ".dat";
     }
@@ -175,7 +174,6 @@ public class Urheilut implements Iterable<Urheilu> {
      * Palauttaa tiedoston nimen, jota k‰ytet‰‰n tallennukseen
      * @return tallennustiedoston nimi
      */
-
     public String getTiedostonPerusNimi() {
         return tiedostonPerusNimi;
     }
@@ -205,13 +203,45 @@ public class Urheilut implements Iterable<Urheilu> {
         muutettu = false;
     }
 
-
     /**
      * Palauttaa kerhon harrastusten lukum‰‰r‰n
      * @return urheilujen lukum‰‰r‰n
      */
     public int getLkm() {
         return alkiot.size();
+    }
+
+
+    /** Korvataan tai lis‰t‰‰n uusi urheilu
+     * @param urh urheilu, jonka tietoja muokataan
+     */
+    public void korvaaTaiLisaa(Urheilu urh) {
+        int id = urh.getTunnusNro();
+        for (int i = 0; i<alkiot.size(); i++) {
+            if (alkiot.get(i).getTunnusNro()==id) {
+                alkiot.set(i,urh);
+                muutettu=true;
+                return;       
+            }
+        }
+        lisaa(urh);
+    }
+
+
+    /**Poistetaan p‰iv‰m‰‰r‰‰n liittyv‰t urheilut
+     * @param pvmId - mink‰ p‰iv‰m‰‰r‰n kaikki merkinn‰t halutaan poista
+     */
+    public int poistaPvmUrheilut(int pvmId) {
+        int n = 0;
+        for (Iterator<Urheilu> it = alkiot.iterator(); it.hasNext();) {
+            Urheilu urh = it.next();
+            if(urh.getPvmNro()==pvmId) {
+                it.remove();
+                n++;
+            }
+        }
+        if (n>0)muutettu = true;
+        return n;
     }
 
     

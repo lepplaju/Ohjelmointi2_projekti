@@ -68,6 +68,13 @@ public class Kayttaja {
     public void korvaaTaiLisaa(Pvm pvm ) {
         pvmt.korvaaTaiLisaa(pvm);
     }
+    
+    /**Korvaa urheilun jos sit‰ on muutettu
+     * @param urh mik‰ urheilu on kyseess‰
+     */
+    public void korvaaTaiLisaa(Urheilu urh ) {
+        urheilut.korvaaTaiLisaa(urh);
+    }
 
     /**Antaa tietyn p‰iv‰m‰‰r‰n kaikki urheilusuoritukset n‰kyviin
      * @param pvm p‰iv‰m‰‰r‰, jonka tiedot halutaan n‰kyviin
@@ -173,6 +180,17 @@ public class Kayttaja {
         return pvmt.etsi(hakuehto); 
     } 
     
+    /**Poistaa p‰iv‰m‰‰r‰n
+     * @param pvm joka halutaan poistaa
+     * @return montako pvm poistettiin
+     */
+    public boolean poistaPvm(Pvm pvm) {
+        if(pvm==null) return false;
+        boolean poistettiinko =pvmt.poistaPvm(pvm);
+        urheilut.poistaPvmUrheilut(pvm.getTunnusNro());
+        return poistettiinko;
+        
+    }
     
     /**
      * p‰‰ohjelma
@@ -217,5 +235,7 @@ public class Kayttaja {
                 urheilu.tulosta(System.out);
         }
     }
+
+
     
 }

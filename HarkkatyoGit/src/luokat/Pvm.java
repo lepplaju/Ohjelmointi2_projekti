@@ -3,6 +3,7 @@ package luokat;
 import static luokat.Laji.rand;
 import java.io.PrintStream;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import fi.jyu.mit.ohj2.Mjonot;
 
@@ -17,6 +18,7 @@ public class Pvm implements Cloneable {
     private int pv;
     private int kk;
     private int vv;
+    
     
     /**
      * @return palauttaa päivän
@@ -153,11 +155,16 @@ public class Pvm implements Cloneable {
         return uusi;
     }
     
-    public String setPvm(String tekstikentta) {
+    /** Asettaa päivämäärän kun muokataan jo olemassa olevaa
+     * @param tekstikentta mitä tekstikenttään on syötetty
+     * @return tyhjän jos ei ongelmia
+     */
+    public String aseta(String tekstikentta) {
         StringBuilder sb = new StringBuilder(tekstikentta);
         this.pv = Mjonot.erota(sb, '.',pv);
         this.kk = Mjonot.erota(sb, '.',kk);
         this.vv = Mjonot.erota(sb, '.',vv);
+        if(kk<1||kk>12 || pv>31|| pv<1) return "tarkista kentän oikeellisuus"; 
         return null;
     }
     

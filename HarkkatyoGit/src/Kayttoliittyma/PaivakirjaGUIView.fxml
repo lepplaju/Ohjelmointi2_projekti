@@ -8,15 +8,13 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="449.0" prefWidth="932.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Kayttoliittyma.PaivakirjaGUIController">
+<BorderPane prefHeight="329.0" prefWidth="846.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Kayttoliittyma.PaivakirjaGUIController">
    <left>
       <ListChooser fx:id="chooserPvm" prefHeight="400.0" prefWidth="126.0" rivit="1.1.2021" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -35,8 +33,8 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaPvm" text="Muokkaa Päivämäärää" />
-                  <MenuItem mnemonicParsing="false" onAction="#MuokkaaUrheilua" text="Muokkaa Urheilua" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaPvm" text="Poista valittu pvm" />
+                  <MenuItem mnemonicParsing="false" onAction="#handlePoistaUrheilu" text="Poista valittu urheilu" />
               <MenuItem mnemonicParsing="false" onAction="#MuokkaaLajeja" text="Muokkaa Lajeja" />
             </items>
           </Menu>
@@ -63,7 +61,7 @@
       </StringGrid>
    </center>
    <bottom>
-      <HBox prefHeight="200.0" prefWidth="629.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="103.0" prefWidth="902.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="200.0" prefWidth="185.0">
                <children>
@@ -79,11 +77,20 @@
                   </ComboBoxChooser>
                </children>
             </VBox>
-            <ScrollPane fx:id="panelTiedot" prefHeight="200.0" prefWidth="447.0" />
-            <Button mnemonicParsing="false" onAction="#HandleUusiPvm" text="Lisaa Pvm" />
-            <TextArea prefHeight="200.0" prefWidth="135.0" />
-            <ComboBoxChooser fx:id="cbLajit" />
-            <Button mnemonicParsing="false" onAction="#HandleUusiUrheilu" text="Lisää Urheilu" />
+            <VBox alignment="TOP_RIGHT" prefHeight="169.0" prefWidth="717.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#HandleUusiPvm" prefHeight="25.0" prefWidth="85.0" text="Uusi Pvm">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#HandleUusiUrheilu" prefWidth="85.0" text="Uusi Urheilu">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
          </children>
       </HBox>
    </bottom>

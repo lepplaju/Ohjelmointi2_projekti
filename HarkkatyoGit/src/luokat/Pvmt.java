@@ -238,13 +238,32 @@ public class Pvmt implements Iterable<Pvm>{
     }
       
     /**
-     * Palauttaa Kerhon koko nimen
-     * @return Kerhon koko nimi merkkijononna
+     * Palauttaa Käyttäjän koko nimen
+     * @return käyttäjän koko nimi merkkijononna
      */
     public String getKokoNimi() {
         return kokoNimi;
     }
+    
+    /**poistaa tietyn pvm:n 
+     * @param pvm , jota etsitään
+     * @return true jos löydettiin
+     */
+    public boolean poistaPvm(Pvm pvm) {
+        boolean ret = paivamaarat.remove(pvm);
+        if (ret==true) muutettu = true;
+        return ret;
+    }
 
+    /**Etsii pvmn idn perustella
+     * @param id tunnusnumero, jonka avulla etsitään
+     * @return jäsenen indeksi tai -1 jos ei löytynyt
+     */
+    public int etsiId(int id) {
+        for (int i = 0; i<getPvmLkm(); i++)
+            if (paivamaarat.get(i).getTunnusNro()==id) return i;
+        return -1;
+    }
     
     /**
      * @param args not in use

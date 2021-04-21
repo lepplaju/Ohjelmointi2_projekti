@@ -11,8 +11,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import luokat.Urheilu;
 
 /**
@@ -24,6 +26,7 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
     
     @FXML private GridPane gridUrheilu;
     @FXML private Label labelVirhe;
+    @FXML private ScrollPane scrolleri;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -50,8 +53,8 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
 
     @Override
     public void handleShown() {
-        // TODO Auto-generated method stub
-        
+        kentta = Math.max(urhKohdalla.ekaKentta(), Math.min(kentta, urhKohdalla.getKenttia()-1));
+        edits[kentta].requestFocus();
     }
       
     @Override
@@ -75,6 +78,7 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
         for (TextField edit : edits)
             if ( edit != null )
                 edit.setOnKeyReleased( e -> kasitteleMuutosUrheiluun((TextField)(e.getSource())));    
+        scrolleri.setFitToHeight(true);
     }
     
     /**
@@ -97,6 +101,7 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
             naytaVirhe(virhe);
         }
     }
+
     
     /**
      * Käyttäjälle näkyvä virheteksti jos syötetään vääränlainen teksti kenttään
@@ -153,8 +158,22 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
     public static void naytaUrheilu(TextField[] edits, Urheilu urh) {
         if (urh == null) return;
         for (int k = urh.ekaKentta(); k < urh.getKenttia(); k++) {
-            edits[k].setText(urh.anna(k));
-        }
+            if(urh.anna(k).equals("")||urh.anna(k)==null||urh.anna(k).equals("0.0")) edits[k].setText("");
+            else edits[k].setText(urh.anna(k));
+            }       
+    }
+
+
+    
+    
+    /** Palautetaan uusi Urheilu, jos on painettu OK
+     * @param modalityStage mille ollaan modaalisia
+     * @param oletus mitä urheilua muokataan
+     * @return null jos painetaan cancel, muuten uusi urheilu
+     */
+    public static Urheilu kysyUrheilu(Stage modalityStage, Urheilu oletus) {
+        return ModalController.showModal(UrheiluDialogController.class.getResource("UrheiluDialogView.fxml"),
+                "Kayttaja", modalityStage, oletus);
     }
 
 
