@@ -80,7 +80,7 @@ public class Pvmt implements Iterable<Pvm>{
      * @return kaikki löytyneet päivämäärät
      */ 
     @SuppressWarnings("unused")
-    public Collection<Pvm> etsi(String hakuehto) { 
+    public Collection<Pvm> etsi() { 
         Collection<Pvm> loytyneet = new ArrayList<Pvm>(); 
         for (Pvm pvm : this) { 
             loytyneet.add(pvm);  

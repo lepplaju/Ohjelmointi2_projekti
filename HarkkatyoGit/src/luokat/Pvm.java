@@ -1,6 +1,5 @@
 package luokat;
 
-import static luokat.Laji.rand;
 import java.io.PrintStream;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -82,8 +81,8 @@ public class Pvm implements Cloneable {
      * t‰ytet‰‰n Pvm tarvittavat tiedot
      */
     public void taytaTiedot() {
-        this.pv = rand(1,28);
-        this.kk = rand(1,12);
+        this.pv = 28;
+        this.kk = 12;
         this.vv = 2021;
     }
     

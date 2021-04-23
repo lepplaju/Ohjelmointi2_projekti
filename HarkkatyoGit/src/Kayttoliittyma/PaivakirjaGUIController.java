@@ -21,7 +21,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import luokat.Kayttaja;
-import luokat.Laji;
 import luokat.Pvm;
 import luokat.Pvmt;
 import luokat.SailoException;
@@ -45,7 +44,6 @@ public class PaivakirjaGUIController implements Initializable{
     @FXML private TextField hakuehto;
     @FXML private Label labelVirhe;
     @FXML private ScrollPane panelTiedot;
-    @FXML private ComboBoxChooser<Laji> cbLajit;
     @FXML private ListChooser<Pvm> chooserPvm;
     @FXML private StringGrid<Urheilu>urheiluTable;
     
@@ -102,10 +100,7 @@ public class PaivakirjaGUIController implements Initializable{
     @FXML private void HandleUusiUrheilu() {
         uusiUrheilu();
     }
-    
-    @FXML private void HandleUusiLaji() {
-        uusiLaji();
-    }
+
 
     
     
@@ -116,7 +111,7 @@ public class PaivakirjaGUIController implements Initializable{
     private Pvm pvmKohdalla;
     private String kayttajannimi="Late";
     private static Urheilu apuUrheilu = new Urheilu();
-    Urheilu urhKohdalla;
+    private Urheilu urhKohdalla;
 
     /**
      * Alustaa  p‰iv‰m‰‰rien tiedot omaan listaan ja 
@@ -190,6 +185,8 @@ public class PaivakirjaGUIController implements Initializable{
         String[] rivi = new String[kenttia-urh.ekaKentta()];
         for (int i = 0, k=urh.ekaKentta(); k<kenttia; i++, k++) {
             rivi[i] = urh.anna(k);
+            if(rivi[i].equals("null")) rivi[i]="-";
+            if(rivi[i].equals("0.0")) rivi[i]="-";            
         }        
         urheiluTable.add(urh,rivi);
     }    
@@ -245,18 +242,6 @@ public class PaivakirjaGUIController implements Initializable{
         lueTiedosto(uusinimi);
         return true;
     }
-    
-    /**
-     * Saa tiedostosta luetut lajit n‰kyviin
-     */
-    public void getLajitNakyviin() {        
-        for (int i =0; i<kayttaja.getLajiLkm(); i++) {
-            Laji uusi = kayttaja.annaLaji(i);
-            if (uusi!=null)
-                cbLajit.add(uusi);    
-        }
-        
-    }
 
     /**
      * Tallentaa tiedoston 
@@ -285,14 +270,26 @@ public class PaivakirjaGUIController implements Initializable{
      * @param pvmId mik‰ on p‰iv‰n id
      */
     protected void hae(int pvmId) {
-        chooserPvm.clear();
-        int index=0;
+        int pvmNro = pvmId;
+        if (pvmNro<=0);
+        Pvm kohdalla = pvmKohdalla;
+        if (kohdalla !=null) pvmNro=kohdalla.getTunnusNro();
         
-        for (int i = 0; i < kayttaja.getEriPaivat(); i++) {
-            Pvm pvm = kayttaja.annaPvm(i);
+        chooserPvm.clear();
+        int index=0;    
+        Collection<Pvm> pvmt;
+        try {
+        pvmt = kayttaja.annaPvmt();
+        int i=0;
+        
+        for (Pvm pvm: pvmt) {
             if (pvm.getTunnusNro() == pvmId) index = i;
             chooserPvm.add(pvm.getPaivays(), pvm);
+            i++;
         }
+    }catch (Exception ex) {
+        Dialogs.showMessageDialog("J‰senen hakemisessa ongelmia! " + ex.getMessage());
+    }
         chooserPvm.setSelectedIndex(index); // t‰st‰ tulee muutosviesti joka n‰ytt‰‰ j‰senen
     }
     
@@ -368,24 +365,7 @@ public class PaivakirjaGUIController implements Initializable{
             //
         }
     }
-    
-    /**
-     * Lis‰‰ uuden lajin
-     */
-    public void uusiLaji() {
-        Laji uusi = new Laji();
-        uusi.rekisteroi();
-        uusi.taytaTiedot();       
-        try {
-            kayttaja.lisaa(uusi);
-        } catch (Exception e) {
-            Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
-            return;
-        }
-        cbLajit.add(uusi);
-    }
 
-       
     /**
      * @param kayttaja jota k‰ytet‰‰n t‰ss‰ k‰yttˆliittym‰ss‰
      */
@@ -424,8 +404,17 @@ public class PaivakirjaGUIController implements Initializable{
     }
     
    private void poistaUrheilu() {
-       // TODO Auto-generated method stub
-       
+       int rivi = urheiluTable.getRowNr();
+       if(rivi<0) return;
+       Urheilu urh = urheiluTable.getObject();
+       if( urh ==null) return;
+       if(!Dialogs.showQuestionDialog("Poisto", "Poistetaanko Urheilu p‰iv‰m‰‰r‰lt‰: "
+               + urh.getPvmNro(),"kyll‰", "ei")) return;
+       kayttaja.poistaUrheilu(urh);
+       naytaUrheilut(pvmKohdalla);
+       int urheiluja = urheiluTable.getItems().size();
+       if (rivi>=urheiluja) rivi = urheiluja -1;
+       urheiluTable.getFocusModel().focus(rivi);
    }
 
 }

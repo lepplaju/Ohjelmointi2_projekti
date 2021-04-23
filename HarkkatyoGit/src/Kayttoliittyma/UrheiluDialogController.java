@@ -3,6 +3,7 @@ package Kayttoliittyma;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
@@ -34,7 +35,7 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
     }
     
     @FXML private void handleOK() {
-        if ( urhKohdalla != null && urhKohdalla.getLajiId() == 0) {
+        if ( urhKohdalla.getLajiId()==null || urhKohdalla.getLajiId().equals("")){
             naytaVirhe("Anna joku Laji");
             return;
         }
@@ -81,6 +82,7 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
             if ( edit != null )
                 edit.setOnKeyReleased( e -> kasitteleMuutosUrheiluun((TextField)(e.getSource())));    
         scrolleri.setFitToHeight(true);
+        
     }
     
     /**

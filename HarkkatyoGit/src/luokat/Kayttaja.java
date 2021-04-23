@@ -1,6 +1,7 @@
 package luokat;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -11,42 +12,9 @@ import java.util.List;
  */
 public class Kayttaja {
 
-    private Lajit lajit = new Lajit();
     private Urheilut urheilut = new Urheilut();
     private Pvmt pvmt = new Pvmt();
 
-    /**
-     * List‰‰n uusi harrastus kerhoon
-     * @param laj lis‰tt‰v‰ harrastus 
-     * @example
-     * <pre name="test">
-     * Kayttaja kayttajaX = new Kayttaja();
-     * Pvm paiva1 = new Pvm(); 
-     * Pvm paiva2=new Pvm(1,1,1);
-     * paiva1.rekisteroi(); 
-     * paiva2.rekisteroi();
-     * kayttajaX.getEriPaivat() === 0;
-     * kayttajaX.lisaa(paiva1); 
-     * kayttajaX.getEriPaivat() === 1;
-     * kayttajaX.lisaa(paiva2); 
-     * kayttajaX.getEriPaivat() === 2;
-     * kayttajaX.annaPvm(0) === paiva1;
-     * kayttajaX.annaPvm(1) === paiva2;
-     * int id1 = paiva1.getTunnusNro();
-     * int id2 = paiva2.getTunnusNro();
-     * Urheilu sali1 = new Urheilu(id1);
-     * Urheilu sali2 = new Urheilu(id2);
-     * sali1.taytaTiedot(id1);
-     * sali2.taytaTiedot(id2);
-     * kayttajaX.lisaa(sali1);
-     * kayttajaX.lisaa(sali2);
-     * kayttajaX.annaUrheilut(paiva1).contains(sali1) === true;
-     * kayttajaX.annaUrheilut(paiva2).contains(sali1) === false;
-     * </pre>
-     */
-    public void lisaa(Laji laj) {
-        lajit.lisaa(laj);
-    }
     
     /**lis‰t‰‰n uusi urheilu urheilut-taulukkoon
      * @param urheilu lis‰tt‰v‰ urheilu
@@ -99,21 +67,16 @@ public class Kayttaja {
         return pvmt.annaPvm(tunnusNro+1);
     }
     
-    /**Antaa lajin tietyn indeksin avulla
-     * @param id indeksi
-     * @return Laji
+    /**Etsii kaikki p‰iv‰m‰‰r‰t listaan
+     * @return kaikki p‰iv‰m‰‰r‰t
      */
-    public Laji annaLaji(int id) {
-        return lajit.getLaji(id);
+    public Collection<Pvm> annaPvmt() {
+            List<Pvm> loydetyt = new ArrayList<Pvm>();
+                     for (Pvm pv : pvmt)
+                         loydetyt.add(pv);
+                     return loydetyt;            
     }
-
     
-    /**Palauttaa kuinka monta lajia taulukosa on kirjattu
-     * @return lajien lukum‰‰r‰n
-     */
-    public int getLajiLkm() {
-        return lajit.getLkm();
-    }
     
     /**
      * Asettaa tiedostojen perusnimet
@@ -125,7 +88,6 @@ public class Kayttaja {
         String hakemistonNimi = "";
         if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";
         pvmt.setTiedostonPerusNimi(hakemistonNimi + "pvmt");
-        lajit.setTiedostonPerusNimi(hakemistonNimi + "lajit");
         urheilut.setTiedostonPerusNimi(hakemistonNimi + "urheilut");
     }
     
@@ -134,13 +96,11 @@ public class Kayttaja {
      * @throws SailoException jos lukeiminen ep‰onnistui
      */
     public void lueTiedostosta(String nimi) throws SailoException {
-        pvmt = new Pvmt(); // jos luetaan olemassa olevaan niin helpoin tyhjent‰‰ n‰in
-        lajit = new Lajit();
+        pvmt = new Pvmt(); 
         urheilut = new Urheilut();
 
         setTiedosto(nimi);
         pvmt.lueTiedostosta();
-        lajit.lueTiedostosta();
         urheilut.lueTiedostosta();
     }
     
@@ -151,12 +111,6 @@ public class Kayttaja {
         String virhe = "";
         try {
             pvmt.tallenna();
-        } catch ( SailoException ex ) {
-            virhe = ex.getMessage();
-        }
-
-        try {
-            lajit.tallenna();
         } catch ( SailoException ex ) {
             virhe = ex.getMessage();
         }
@@ -176,8 +130,8 @@ public class Kayttaja {
      * @return listan p‰iv‰m‰‰rist‰, jotka vastaavat hakuehtoa
      * @throws SailoException Jos jotakin menee v‰‰rin
      */ 
-    public Collection<Pvm> etsi(String hakuehto) throws SailoException { 
-        return pvmt.etsi(hakuehto); 
+    public Collection<Pvm> etsi() throws SailoException { 
+        return pvmt.etsi(); 
     } 
     
     /**Poistaa p‰iv‰m‰‰r‰n
@@ -188,10 +142,14 @@ public class Kayttaja {
         if(pvm==null) return false;
         boolean poistettiinko =pvmt.poistaPvm(pvm);
         urheilut.poistaPvmUrheilut(pvm.getTunnusNro());
-        return poistettiinko;
+        return poistettiinko;        
+    }
+   
+    public void poistaUrheilu(Urheilu urh) {
+        urheilut.poistaUrheilu(urh);
         
     }
-    
+  
     /**
      * p‰‰ohjelma
      * @param args antaa varmaan jossain vaiheessa k‰ytt‰j‰n nimen
@@ -201,10 +159,6 @@ public class Kayttaja {
         System.out.println(pvm1);
         Urheilu urheilu1 = new Urheilu();
         System.out.println(urheilu1);
-        Laji laji1 = new Laji();
-        System.out.println(laji1);        
-        System.out.println(pvm1 +", "+ urheilu1 +", " + laji1);
-        
         Kayttaja kayttaja = new Kayttaja();
         
         Pvm paiva1 = new Pvm(), paiva2 = new Pvm(2,2,2);
@@ -235,6 +189,8 @@ public class Kayttaja {
                 urheilu.tulosta(System.out);
         }
     }
+
+
 
 
     

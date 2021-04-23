@@ -31,10 +31,8 @@ public class Urheilut implements Iterable<Urheilu> {
         List<Urheilu> loydetyt = new ArrayList<Urheilu>();
                  for (Urheilu urh : alkiot)
                      if (urh.getPvmNro() == pvmTunnusNro) loydetyt.add(urh);
-                 return loydetyt;
-             
+                 return loydetyt;            
     }
-
 
     @Override
     public Iterator<Urheilu> iterator() {
@@ -230,6 +228,7 @@ public class Urheilut implements Iterable<Urheilu> {
 
     /**Poistetaan p‰iv‰m‰‰r‰‰n liittyv‰t urheilut
      * @param pvmId - mink‰ p‰iv‰m‰‰r‰n kaikki merkinn‰t halutaan poista
+     * @return kuinka monta urheilua poistettiin
      */
     public int poistaPvmUrheilut(int pvmId) {
         int n = 0;
@@ -242,6 +241,17 @@ public class Urheilut implements Iterable<Urheilu> {
         }
         if (n>0)muutettu = true;
         return n;
+    }
+
+
+    /**Poistetaan yksitt‰inen urheilu
+     * @param urh kirjaus, joka halutaan poistaa
+     * @return true jos poistettiin
+     */
+    public boolean poistaUrheilu(Urheilu urh) {
+        boolean ret = alkiot.remove(urh);
+        if (ret==true) muutettu = true;
+        return ret;
     }
 
     

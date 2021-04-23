@@ -4,9 +4,6 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 import fi.jyu.mit.ohj2.Mjonot;
-import static luokat.Laji.rand;
-import luokat.Laji;
-import luokat.Lajit;
 
 /**
  * @author Lepplaju
@@ -20,7 +17,7 @@ public class Urheilu implements Cloneable{
     private String klo;
     private int pvmNro;
     private int tunnusNro;
-    private int lajiId;
+    private String lajiNimi;
     private String suoritusaika;
     private double intensity;
     private double tyytyvaisyys;
@@ -45,12 +42,12 @@ public class Urheilu implements Cloneable{
      * @param paivaid mink‰ p‰iv‰m‰‰r‰n tietoja
      */
     public void taytaTiedot(int paivaid) {
-        this.klo = rand(6,21) + ":" + String.format("%02d",rand(0,59));
+        this.klo = "rand";
         this.pvmNro = paivaid;
-        this.lajiId = rand(1,8);
-        this.suoritusaika = rand(0,2) +":" + rand(30,59);
-        this.intensity = rand(5, 10);
-        this.tyytyvaisyys = rand(5, 10);
+        this.lajiNimi = " " +"rand";
+        this.suoritusaika = "rand";
+        this.intensity = 1;
+        this.tyytyvaisyys = 1;
         this.muutaLisattavaa ="*muuta lis‰tt‰v‰‰";
     }
     
@@ -58,11 +55,11 @@ public class Urheilu implements Cloneable{
      * T‰ytt‰‰ tiedot Urheiluun ilman yhteytt‰ mihink‰‰n p‰iv‰m‰‰r‰‰n
      */
     public void taytaTiedot() {
-        this.klo = rand(6,21) + ":" + String.format("%02d",rand(0,59));
-        this.lajiId = rand(1,8);
-        this.suoritusaika = rand(0,2) +":" + rand(30,59);
-        this.intensity = rand(5, 10);
-        this.tyytyvaisyys = rand(5, 10);
+        this.klo = "rand";
+        this.lajiNimi = " " +"rand";
+        this.suoritusaika = "rand";
+        this.intensity = 1;
+        this.tyytyvaisyys = 1;
         this.muutaLisattavaa ="*muuta lis‰tt‰v‰‰";
     }
     
@@ -95,7 +92,7 @@ public class Urheilu implements Cloneable{
      * @param out tietovirta johon tulostetaan
      */
     public void tulosta(PrintStream out) {
-        out.println("Lajin id: " + this.lajiId + ", kelloanika: " + this.klo + ", "+ " treenin kesto: "
+        out.println("Lajin id: " + this.lajiNimi + ", kelloanika: " + this.klo + ", "+ " treenin kesto: "
                 +this.suoritusaika+", " +"treenin intensiteetti: " + this.intensity +", "
                 +  "treeniin tyytyv‰isyys: " + this.tyytyvaisyys+", "  +this.muutaLisattavaa);
     }
@@ -108,7 +105,7 @@ public class Urheilu implements Cloneable{
         StringBuilder sb = new StringBuilder(rivi);
         setTunnusNro(Mjonot.erota(sb, '|', getTunnusNro()));
         pvmNro = Mjonot.erota(sb, '|', pvmNro);
-        lajiId=Mjonot.erota(sb, '|',lajiId);
+        lajiNimi=Mjonot.erota(sb, '|',lajiNimi);
         klo=Mjonot.erota(sb, '|',klo);       
         suoritusaika=Mjonot.erota(sb, '|',suoritusaika);
         intensity=Mjonot.erota(sb, '|',intensity);
@@ -118,7 +115,7 @@ public class Urheilu implements Cloneable{
     
     @Override
     public String toString() {
-        return "" + getTunnusNro() + "|" + pvmNro + "|" + lajiId + "|" + klo + "|" + suoritusaika 
+        return "" + getTunnusNro() + "|" + pvmNro + "|" + lajiNimi + "|" + klo + "|" + suoritusaika 
                 + "|" + intensity + "|" + tyytyvaisyys  + "|" + muutaLisattavaa;
     }
 
@@ -147,8 +144,8 @@ public class Urheilu implements Cloneable{
     /**
      * @return palauttaa Urheiluun liittyv‰n lajin Id:n
      */
-    public int getLajiId() {
-        return this.lajiId;
+    public String getLajiId() {
+        return this.lajiNimi;
     }
 
     /** 
@@ -176,15 +173,15 @@ public class Urheilu implements Cloneable{
         case 1:
             return "pvmId";
         case 2:
-            return "lajiId";
+            return "Lajin nimi";
         case 3:
-            return "klo";
+            return "Klo";
         case 4:
-            return "suoritusaika";
+            return "Suoritusaika";
         case 5: 
-            return "intensity";
+            return "Intensiteetti";
         case 6: 
-            return "tyytyvaisyys";
+            return "Tyytyvaisyys";
         case 7: 
             return "Muuta Lis‰tt‰v‰‰";
         default:
@@ -213,7 +210,7 @@ public class Urheilu implements Cloneable{
         case 1:
             return "pvmId";
         case 2:
-            lajiId=Mjonot.erotaInt(sb,0);
+            lajiNimi=st;
             return null;
         case 3:
             klo = st;
@@ -246,7 +243,7 @@ public class Urheilu implements Cloneable{
         case 1:
             return "" +pvmNro;
         case 2:
-            return "" + lajiId;
+            return "" + lajiNimi;
         case 3:
             return "" + klo;
         case 4:
@@ -263,7 +260,7 @@ public class Urheilu implements Cloneable{
     }
 
     public String setlajiId(String s) {      
-        lajiId =Mjonot.erotaInt(s,0);
+        lajiNimi =s;
         return null;
     }
 
