@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import fi.jyu.mit.fxgui.ComboBoxChooser?>
 <?import fi.jyu.mit.fxgui.ListChooser?>
 <?import fi.jyu.mit.fxgui.StringGrid?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="329.0" prefWidth="846.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Kayttoliittyma.PaivakirjaGUIController">
+<BorderPane prefHeight="329.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Kayttoliittyma.PaivakirjaGUIController">
    <left>
       <ListChooser fx:id="chooserPvm" prefHeight="400.0" prefWidth="126.0" rivit="1.1.2021" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -61,18 +61,18 @@
    <bottom>
       <HBox prefHeight="103.0" prefWidth="902.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="185.0">
+            <VBox prefHeight="103.0" prefWidth="224.0">
                <children>
-                  <TextField fx:id="hakuehto">
+                  <TextField fx:id="hakuehto" onKeyReleased="#handleHakuehto">
                      <VBox.margin>
                         <Insets right="10.0" top="10.0" />
                      </VBox.margin>
                   </TextField>
-                  <ComboBoxChooser fx:id="cbKentat" onAction="#handleHakuehto" prefHeight="25.0" prefWidth="132.0">
+                  <Label text="Hae Päivämäärän mukaan">
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </VBox.margin>
-                  </ComboBoxChooser>
+                  </Label>
                </children>
             </VBox>
             <VBox alignment="TOP_RIGHT" prefHeight="169.0" prefWidth="717.0">

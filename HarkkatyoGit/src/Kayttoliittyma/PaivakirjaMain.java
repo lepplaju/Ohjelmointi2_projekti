@@ -11,7 +11,7 @@ import javafx.fxml.FXMLLoader;
 
 /**
  * @author Lepplaju
- * @version 4.4.2021
+ * @version 23.4.2021
  *
  */
 public class PaivakirjaMain extends Application {

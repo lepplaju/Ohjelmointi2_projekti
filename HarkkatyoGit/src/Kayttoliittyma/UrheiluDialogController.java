@@ -3,7 +3,6 @@ package Kayttoliittyma;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.ModalControllerInterface;
@@ -28,6 +27,7 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
     @FXML private GridPane gridUrheilu;
     @FXML private Label labelVirhe;
     @FXML private ScrollPane scrolleri;
+    @FXML private TextField hakuehto;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -148,7 +148,7 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
             gridUrheilu.add(label, 0, i);
             TextField edit = new TextField();
             edits[k] = edit;
-            edit.setId("e"+k);
+            edit.setId("o"+k);
             gridUrheilu.add(edit, 1, i);
         }
         return edits;

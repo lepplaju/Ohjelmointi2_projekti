@@ -77,6 +77,15 @@ public class Kayttaja {
                      return loydetyt;            
     }
     
+    /**Etsii p‰iv‰m‰‰r‰t hakuehdon mukaan
+     * @param ehto mik‰ tekstikent‰n sis‰ltˆ on
+     * @return palauttaa listan p‰iv‰m‰‰rist‰, joka t‰ytt‰‰ ehdon
+     * @throws SailoException palauttaa poikkeuksen
+     */
+    public Collection<Pvm> annaPvmt(String ehto) throws SailoException {        
+        return etsi(ehto);
+    }
+    
     
     /**
      * Asettaa tiedostojen perusnimet
@@ -130,8 +139,8 @@ public class Kayttaja {
      * @return listan p‰iv‰m‰‰rist‰, jotka vastaavat hakuehtoa
      * @throws SailoException Jos jotakin menee v‰‰rin
      */ 
-    public Collection<Pvm> etsi() throws SailoException { 
-        return pvmt.etsi(); 
+    public Collection<Pvm> etsi(String hakuehto) throws SailoException { 
+        return pvmt.etsi(hakuehto); 
     } 
     
     /**Poistaa p‰iv‰m‰‰r‰n
@@ -145,6 +154,9 @@ public class Kayttaja {
         return poistettiinko;        
     }
    
+    /** Poistetaan valittu utheilu
+     * @param urh urheilu joka halutaan poistaa
+     */
     public void poistaUrheilu(Urheilu urh) {
         urheilut.poistaUrheilu(urh);
         
@@ -189,6 +201,8 @@ public class Kayttaja {
                 urheilu.tulosta(System.out);
         }
     }
+
+
 
 
 

@@ -2,7 +2,6 @@ package luokat;
 
 import java.io.PrintStream;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import fi.jyu.mit.ohj2.Mjonot;
 
@@ -11,7 +10,7 @@ import fi.jyu.mit.ohj2.Mjonot;
  * @version 15.3.2021
  *
  */
-public class Pvm implements Cloneable {
+public class Pvm implements Cloneable, Comparable<Pvm> {
     private int tunnusNro;
     private static int seuraavaNro = 1;
     private int pv;
@@ -178,5 +177,24 @@ public class Pvm implements Cloneable {
         this.vv = Mjonot.erota(sb, '.',vv);
     }
 
+    @Override
+    public int compareTo(Pvm pvm) {      
+        if (this.vv<pvm.vv) return 1;
+        if (this.vv>pvm.vv) return -1;
+        
+        if (this.vv==pvm.vv){
+            if (this.kk<pvm.kk) return 1; 
+            if (this.vv>pvm.vv) return -1;
+            
+            if (this.kk==pvm.kk) {
+                if (this.pv<pvm.pv) return 1; 
+                if (this.pv>pvm.pv) return -1;
+                
+                if (this.pv==pvm.pv) return 0;
+            }
+        }
+            return 2;
+            }        
+    }
 
-}
+

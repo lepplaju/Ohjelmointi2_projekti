@@ -259,16 +259,27 @@ public class Urheilu implements Cloneable{
         }
     }
 
+    /**Asettaa lajin nimen
+     * @param s mik‰ lajin nimeksi halutaan
+     * @return palauttaa tyhj‰n
+     */
     public String setlajiId(String s) {      
         lajiNimi =s;
         return null;
     }
 
+    /** Asettaa kellonajan urheilun tietoihin
+     * @param s teksti, joka halutaan sijoittaa
+     * @return null
+     */
     public String setKlo(String s) {
         klo = s;
         return null;
     }
 
+    /** asettaa urheilulle p‰iv‰m‰‰r‰n tunnusnumeron 
+     * @param pvm mik‰ p‰iv‰m‰‰r‰ on kyseess‰
+     */
     public void setPvmId(Pvm pvm) {
         pvmNro=pvm.getTunnusNro();
         

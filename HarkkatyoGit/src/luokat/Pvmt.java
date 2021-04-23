@@ -2,21 +2,17 @@ package luokat;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
-
-import Kayttoliittyma.PvmDialogController;
+import fi.jyu.mit.ohj2.WildChars;
 
 /**
  * @author Lepplaju
@@ -75,17 +71,20 @@ public class Pvmt implements Iterable<Pvm>{
         return null;
     }
     
-    /** 
-     * @param hakuehto hakuehto  
-     * @return kaikki löytyneet päivämäärät
-     */ 
-    @SuppressWarnings("unused")
-    public Collection<Pvm> etsi() { 
-        Collection<Pvm> loytyneet = new ArrayList<Pvm>(); 
-        for (Pvm pvm : this) { 
-            loytyneet.add(pvm);  
-        } 
-        return loytyneet; 
+    /** Etsitään listaan hakuehdon perusteella, eli päivämäärän perusteella
+     * @param hakuEhto tekstikentän sisältö
+     * @return palauttaa kaikki, jotka täyttävät hakuehdon
+     */
+    public Collection <Pvm> etsi(String hakuEhto){
+        String ehto ="*";
+        if(hakuEhto!=null&& hakuEhto.length()>0)ehto = hakuEhto;
+        List<Pvm> loytyneet = new ArrayList<Pvm>();
+        
+        for(Pvm pv:this) {
+            if (WildChars.onkoSamat(pv.getPaivays(), ehto)) loytyneet.add(pv);
+        }
+        Collections.sort(loytyneet);
+        return loytyneet;
     }
 
     /**

@@ -63,6 +63,7 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
         pvmKohdalla = oletus;
         naytaPvm(pvmKohdalla);
     }
+    
 
     
     //====================================================
@@ -84,7 +85,10 @@ public class PvmDialogController implements ModalControllerInterface<Pvm>, Initi
     private void naytaPvm(Pvm pvm) {
         if (pvm.getTunnusNro() != 0)
             editPaivays.setText(pvm.getPaivays());
-        else editPaivays.clear();
+        else {
+            pvm.taytaTanaan();
+            editPaivays.setText(pvm.getPaivays());
+        }
     }
     
     /**

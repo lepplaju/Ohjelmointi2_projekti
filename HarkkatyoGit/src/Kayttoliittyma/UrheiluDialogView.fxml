@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="313.0" prefWidth="509.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Kayttoliittyma.UrheiluDialogController">
+<BorderPane prefHeight="381.0" prefWidth="496.0" stylesheets="@paivakirja.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Kayttoliittyma.UrheiluDialogController">
    <opaqueInsets>
       <Insets />
    </opaqueInsets>

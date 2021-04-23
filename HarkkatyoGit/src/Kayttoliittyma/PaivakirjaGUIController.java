@@ -4,32 +4,23 @@ import java.io.PrintStream;
 import java.util.Collection;
 import java.util.List;
 
-import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.StringGrid;
-import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Font;
 import luokat.Kayttaja;
 import luokat.Pvm;
-import luokat.Pvmt;
 import luokat.SailoException;
 import luokat.Urheilu;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.List; 
 import java.util.ResourceBundle;
 
 
@@ -53,7 +44,7 @@ public class PaivakirjaGUIController implements Initializable{
     }
 
     @FXML private void handleHakuehto() {
-        if (pvmKohdalla !=null ) hae(pvmKohdalla.getTunnusNro());       
+        hae(0);       
     }    
     
     @FXML private void HandleLopeta() {
@@ -100,8 +91,6 @@ public class PaivakirjaGUIController implements Initializable{
     @FXML private void HandleUusiUrheilu() {
         uusiUrheilu();
     }
-
-
     
     
 //===========================================================================================
@@ -271,17 +260,18 @@ public class PaivakirjaGUIController implements Initializable{
      */
     protected void hae(int pvmId) {
         int pvmNro = pvmId;
-        if (pvmNro<=0);
-        Pvm kohdalla = pvmKohdalla;
-        if (kohdalla !=null) pvmNro=kohdalla.getTunnusNro();
-        
+        if (pvmNro<=0) {
+            Pvm kohdalla = pvmKohdalla;
+            if (kohdalla !=null) pvmNro=kohdalla.getTunnusNro();
+        }
+        String ehto = hakuehto.getText();
+        if (ehto.indexOf('*') < 0) ehto = "*" + ehto + "*"; 
         chooserPvm.clear();
         int index=0;    
         Collection<Pvm> pvmt;
         try {
-        pvmt = kayttaja.annaPvmt();
-        int i=0;
-        
+        pvmt = kayttaja.annaPvmt(ehto);
+        int i=0;       
         for (Pvm pvm: pvmt) {
             if (pvm.getTunnusNro() == pvmId) index = i;
             chooserPvm.add(pvm.getPaivays(), pvm);
@@ -416,5 +406,7 @@ public class PaivakirjaGUIController implements Initializable{
        if (rivi>=urheiluja) rivi = urheiluja -1;
        urheiluTable.getFocusModel().focus(rivi);
    }
+   
+
 
 }
