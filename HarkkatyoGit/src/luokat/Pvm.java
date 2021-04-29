@@ -69,7 +69,7 @@ public class Pvm implements Cloneable, Comparable<Pvm> {
      * tammi.rekisteroi();
      * loka.rekisteroi();
      * loka.getTunnusNro() === 2;
-     * loka.toString() === "13.10.2021";
+     * loka.toString().equals("13.10.2021");
      * </pre>
      */
     public void rekisteroi() {
@@ -85,17 +85,16 @@ public class Pvm implements Cloneable, Comparable<Pvm> {
         this.vv = 2021;
     }
     
-    /**
-     * @param i pv
-     * @param j kk
-     * @param k vv
+    /** T‰ytt‰‰ halutut tiedot
+     * @param p P‰iv‰
+     * @param k Kuukausi
+     * @param v Vuosi
      */
-    public void taytaTiedot(int i, int j, int k) {        
-        this.pv=i;
-        this.kk=j;
-        this.vv=k;
-    }
-    
+    public void taytaTiedot(int p, int k, int v) {        
+        this.pv=p;
+        this.kk=k;
+        this.vv=v;
+    }   
     
     /**
      * Laittaa pvm:n tiedot t‰lle p‰iv‰lle
@@ -137,15 +136,6 @@ public class Pvm implements Cloneable, Comparable<Pvm> {
         return this.pv +"." + this.kk+"." + this.vv;
     }
 
-
-    /**
-     * @param out mihin tulostetaan
-     */
-    public void tulosta(PrintStream out) {
-        out.println(this.pv +"." + this.kk+"." + this.vv);
-        
-    }
-
     @Override
     public Pvm clone() throws CloneNotSupportedException{
         Pvm uusi;
@@ -162,12 +152,20 @@ public class Pvm implements Cloneable, Comparable<Pvm> {
         this.pv = Mjonot.erota(sb, '.',pv);
         this.kk = Mjonot.erota(sb, '.',kk);
         this.vv = Mjonot.erota(sb, '.',vv);
-        if(kk<1||kk>12 || pv>31|| pv<1) return "tarkista kent‰n oikeellisuus"; 
+        if(kk<1||kk>12 || pv>31|| pv<1 ||vv<1 || vv>2021) return "tarkista kent‰n oikeellisuus"; 
         return null;
     }
     
     /**Poimitaan pvm:n tiedot k‰yttˆliittym‰‰n
      * @param rivi rivi teksti‰ tiedostossa
+     * @example
+     * <pre name="test">
+     *   Pvm pvm = new Pvm();
+     *   pvm.parse("1.1.2020");
+     *   pvm.rekisteroi();
+     *   pvm.getTunnusNro() === 3;
+     *   pvm.getPaivays().equals("1.1.2020");
+     * </pre>
      */
     public void parse(String rivi) {
         StringBuilder sb = new StringBuilder(rivi);
@@ -177,6 +175,11 @@ public class Pvm implements Cloneable, Comparable<Pvm> {
         this.vv = Mjonot.erota(sb, '.',vv);
     }
 
+    /**
+     * J‰rjestet‰‰n p‰iv‰m‰‰r‰t oikeaan j‰rjestykseen vertailemalla
+     * @param pvm mihin verrataan
+     * @return 1, -1 tai 0 -  0 jos samat, 1 jos mihin verrataan suurempi
+     */
     @Override
     public int compareTo(Pvm pvm) {      
         if (this.vv<pvm.vv) return 1;

@@ -109,8 +109,7 @@ public class PaivakirjaGUIController implements Initializable{
     protected void alusta() {
         
         chooserPvm.clear();
-        chooserPvm.addSelectionListener(e -> naytaTiedot());
-        
+        chooserPvm.addSelectionListener(e -> naytaTiedot());        
      // alustetaan harrastustaulukon otsikot 
         int eka = apuUrheilu.ekaKentta(); 
         int lkm = apuUrheilu.getKenttia(); 
@@ -120,7 +119,6 @@ public class PaivakirjaGUIController implements Initializable{
         urheiluTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); 
         urheiluTable.setEditable(false); 
         urheiluTable.setPlaceholder(new Label("Ei kirjattuja urheiluita t‰lle p‰iv‰lle")); 
-
     }
 
     /**
@@ -141,8 +139,7 @@ public class PaivakirjaGUIController implements Initializable{
         int r = urheiluTable.getRowNr();
         urhKohdalla = urheiluTable.getObject(r);
         if (  e.getClickCount() == 2)  muokkaaUrheilu();
-                });
-        
+                });    
     }
     
     /**
@@ -300,7 +297,6 @@ public class PaivakirjaGUIController implements Initializable{
         }
     }
     
-
     /**
      * Avaa PvmDialogin ja sen sis‰ll‰ pystyt‰‰n muokkaamaan p‰iv‰m‰‰r‰‰
      */
@@ -363,25 +359,7 @@ public class PaivakirjaGUIController implements Initializable{
         this.kayttaja = kayttaja;
         naytaTiedot();
     }
-
-    /**
-     * @param os Tietovirta
-     * @param pvm Mik‰ p‰iv‰m‰‰r‰
-     */
-    public void tulosta(PrintStream os, final Pvm pvm){
-        os.println("----------------------------------------------");
-        pvm.tulosta(os);
-        os.println("----------------------------------------------");
-        try {
-            List<Urheilu> urheilut = kayttaja.annaUrheilut(pvm);   
-            for (Urheilu urh : urheilut)
-                urh.tulosta(os);  
-        } catch (Exception ex) {
-            Dialogs.showMessageDialog("ERROR" + ex.getMessage());
-        }
-    }
-    
-    
+      
     private void poistaPvm() {
        Pvm pvm = pvmKohdalla;
         if(pvm==null)return;

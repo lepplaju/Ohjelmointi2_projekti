@@ -263,42 +263,4 @@ public class Pvmt implements Iterable<Pvm>{
             if (paivamaarat.get(i).getTunnusNro()==id) return i;
         return -1;
     }
-    
-    /**
-     * @param args not in use
-     * @throws SailoException poikkeus
-     */
-    public static void main(String[] args) throws SailoException {
-        Pvmt testipaivat = new Pvmt();
-        
-        testipaivat.lueTiedostosta("pvmt");
-        
-        Pvm nyt = new Pvm();
-        Pvm tammikuu = new Pvm();
-        Pvm helmikuu = new Pvm();
-        
-        nyt.taytaTiedot();
-        helmikuu.taytaTiedot();
-        tammikuu.taytaTiedot();
-        tammikuu.rekisteroi();
-        
-        try {
-            System.out.println("pvm-luokan testi ========================================");
-            
-           testipaivat.lisaa(tammikuu);
-            
-            for (int i = 1; i < testipaivat.getPvmLkm(); i++) {
-                Pvm pvm = testipaivat.annaPvm(i);
-                System.out.println("Pvm Id: " + pvm.getTunnusNro());
-                pvm.tulosta(System.out);
-            } 
-            
-        } catch (Exception e) {
-            System.out.println("Virhe " + e.getMessage());
-        }
-        
-        testipaivat.tallenna();
-        }
-
-
-    }
+}
