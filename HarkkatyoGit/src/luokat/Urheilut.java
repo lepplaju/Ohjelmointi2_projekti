@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -60,11 +59,11 @@ public class Urheilut implements Iterable<Urheilu> {
      * urheilutX.lisaa(latka1);
      * 
      * Iterator<Urheilu> i2=urheilutX.iterator();
-     * i2.next() === sali1;
-     * i2.next() === lenkki1;
-     * i2.next() === lenkki2;
-     * i2.next() === sali2;
-     * i2.next() === latka1;
+     * i2.next().equals(sali1);
+     * i2.next().equals(lenkki1);
+     * i2.next().equals(lenkki2);
+     * i2.next().equals(sali2);
+     * i2.next().equals(latka1);
 
      * </pre>
      */
@@ -112,8 +111,8 @@ public class Urheilut implements Iterable<Urheilu> {
      *  urheilut = new Urheilut();            // Poistetaan vanhat luomalla uusi
      *  urheilut.lueTiedostosta(tiedNimi);  // johon ladataan tiedot tiedostosta.
      *  Iterator<Urheilu> i = urheilut.iterator();
-     *  i.next().toString() === urh1.toString();
-     *  i.next().toString() === urh2.toString();
+     *  i.next().toString().equals(urh1.toString());
+     *  i.next().toString().equals(urh2.toString());
      *  i.hasNext() === false;
      *  urheilut.lisaa(urh2);
      *  urheilut.tallenna();
@@ -181,6 +180,7 @@ public class Urheilut implements Iterable<Urheilu> {
      * @throws SailoException poikkeus
      */
     public void tallenna() throws SailoException {
+        if (muutettu == false) return;
         File fbak = new File(getBakNimi());
         File ftied = new File(getTiedostonNimi());
         fbak.delete(); // if .. System.err.println("Ei voi tuhota");

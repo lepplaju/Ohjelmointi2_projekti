@@ -25,8 +25,7 @@ public class PaivakirjaMain extends Application {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("paivakirja.css").toExternalForm());
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Paivakirja");
-            
+            primaryStage.setTitle("Paivakirja");           
             
             primaryStage.setOnCloseRequest((event) -> {
                 if ( !paivakirjaCtrl.voikoSulkea() ) event.consume();

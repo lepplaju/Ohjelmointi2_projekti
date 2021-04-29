@@ -214,6 +214,7 @@ public class Pvmt implements Iterable<Pvm>{
      * @throws SailoException poikkeus
      */
     public void tallenna() throws SailoException {
+        if (muutettu == false) return;
         File fbak = new File(getBakNimi());
         File ftied = new File(getTiedostonNimi());
         fbak.delete(); // if .. System.err.println("Ei voi tuhota");

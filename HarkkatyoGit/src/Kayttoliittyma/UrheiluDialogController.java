@@ -39,6 +39,10 @@ public class UrheiluDialogController implements ModalControllerInterface<Urheilu
             naytaVirhe("Anna joku Laji");
             return;
         }
+        if (!labelVirhe.getText().equals("")) {
+            naytaVirhe("tarkista oikeellisuus ennen kuin tallennat!");
+            return;
+        }
         palautettava=urhKohdalla;
         ModalController.closeStage(labelVirhe);
     }

@@ -1,6 +1,5 @@
 package Kayttoliittyma;
 
-import java.io.PrintStream;
 import java.util.Collection;
 import java.util.List;
 
@@ -181,7 +180,7 @@ public class PaivakirjaGUIController implements Initializable{
      * N‰ytt‰‰ poikkeavan syntaksin
      * @param virhe aputeksti, joka halutaan n‰ytt‰‰ ruudulla
      */
-    private void naytaVirhe(String virhe) {
+    public void naytaVirhe(String virhe) {
         if ( virhe == null || virhe.isEmpty() ) {
             labelVirhe.setText("");
             labelVirhe.getStyleClass().removeAll("virhe");
@@ -359,7 +358,10 @@ public class PaivakirjaGUIController implements Initializable{
         this.kayttaja = kayttaja;
         naytaTiedot();
     }
-      
+    
+     /**
+      * Poistetaan p‰iv‰m‰‰r‰ ja sen sis‰ll‰ olevat urheilut
+      */
     private void poistaPvm() {
        Pvm pvm = pvmKohdalla;
         if(pvm==null)return;
@@ -371,13 +373,16 @@ public class PaivakirjaGUIController implements Initializable{
         chooserPvm.setSelectedIndex(index);    
     }
     
+    /**
+     * Poistetaan urheilu, joka on valittuna
+     */
    private void poistaUrheilu() {
        int rivi = urheiluTable.getRowNr();
        if(rivi<0) return;
        Urheilu urh = urheiluTable.getObject();
        if( urh ==null) return;
-       if(!Dialogs.showQuestionDialog("Poisto", "Poistetaanko Urheilu p‰iv‰m‰‰r‰lt‰: "
-               + urh.getPvmNro(),"kyll‰", "ei")) return;
+       if(!Dialogs.showQuestionDialog("Poisto", "Poistetaanko valittu urheilu p‰iv‰m‰‰r‰lt‰: "
+               + pvmKohdalla.getPaivays(),"kyll‰", "ei")) return;
        kayttaja.poistaUrheilu(urh);
        naytaUrheilut(pvmKohdalla);
        int urheiluja = urheiluTable.getItems().size();

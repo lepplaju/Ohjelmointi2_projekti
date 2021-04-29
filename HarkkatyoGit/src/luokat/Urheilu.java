@@ -142,7 +142,7 @@ public class Urheilu implements Cloneable{
     }
           
     /**
-     * @return palauttaa Urheiluun liittyv‰n lajin Id:n
+     * @return palauttaa urheilun lajin nimen
      */
     public String getLajiId() {
         return this.lajiNimi;
@@ -204,6 +204,7 @@ public class Urheilu implements Cloneable{
     public String aseta(int k, String s) {
         String st = s.trim();
         StringBuilder sb = new StringBuilder(st);
+        if (st.contains("|")) return "Sis‰lt‰‰ kielletyn merkin |";
         switch (k) {
         case 0:
             return "id";

@@ -1,6 +1,5 @@
 package luokat;
 
-import java.io.PrintStream;
 import java.util.Calendar;
 
 import fi.jyu.mit.ohj2.Mjonot;
@@ -122,7 +121,7 @@ public class Pvm implements Cloneable, Comparable<Pvm> {
     }
     
     /**
-     * tulostaa p‰iv‰m‰‰r‰n
+     * tulostaa p‰iv‰m‰‰r‰n, niin ett‰ tunnusnumero on n‰kyviss‰.
      */ 
     @Override
     public String toString() { 
