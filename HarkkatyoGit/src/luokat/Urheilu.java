@@ -214,18 +214,27 @@ public class Urheilu implements Cloneable{
             lajiNimi=st;
             return null;
         case 3:
+            int tunnit = Mjonot.erota(sb,':', -1);
+            if (tunnit<0 || tunnit>24) return "tarkista kellonajan oikeellisuus";
+            int minuutit = Mjonot.erotaInt(sb, 0);
+            if (minuutit<0||minuutit>59) return "tarkista kellonajan oikeellisuus";
             klo = st;
             return null;
         case 4:
             suoritusaika = st;
             return null;
         case 5: 
-            intensity = Mjonot.erotaDouble(sb,0);
+            double intenss= Mjonot.erotaDouble(sb,0);
+            if (intenss<0||intenss>10) return "Intensiteetti pit‰‰ olla luku 0-10 v‰list‰"; 
+            intensity = intenss; 
             return null;
         case 6: 
-            tyytyvaisyys = Mjonot.erotaDouble(sb,0);
+            double tyytyv= Mjonot.erotaDouble(sb,0);
+            if (tyytyv<0||tyytyv>10) return "Tyytyv‰isyys pit‰‰ olla luku 0-10 v‰list‰"; 
+            tyytyvaisyys = tyytyv; 
             return null;
         case 7: 
+            if (st.length()>25) return "Ei avauduta t‰‰ll‰";
             muutaLisattavaa = st;
             return null;
         default:
@@ -284,6 +293,21 @@ public class Urheilu implements Cloneable{
     public void setPvmId(Pvm pvm) {
         pvmNro=pvm.getTunnusNro();
         
+    }
+
+    /**Palauttaa yksitt‰isen urheilukirjauksen tyytyv‰isyyden
+     * @return tyytyv‰isyys reaalilukuna
+     */
+    public double getTyytyvaisyys() {
+        return this.tyytyvaisyys;
+        
+    }
+
+    /**palauttaa yksitt‰isen urheilukirjauksen intensiteetin    
+     * @return intensiteetti reaalilukuna
+     */
+    public double getIntensity() {
+        return this.intensity;
     }
     
 }

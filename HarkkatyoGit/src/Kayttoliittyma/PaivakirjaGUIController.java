@@ -75,20 +75,16 @@ public class PaivakirjaGUIController implements Initializable{
         poistaUrheilu();
     }
 
-    @FXML private void MuokkaaLajeja() {
-        Dialogs.showMessageDialog("ei osata muokata lajeja viel‰");
-    }
-
-    @FXML private void UusiKentta() {
-        Dialogs.showMessageDialog("ei osata lis‰t‰ uutta kentt‰‰");
-    }
-
     @FXML private void HandleUusiPvm() {
         uusiPvm();
     }
 
     @FXML private void HandleUusiUrheilu() {
         uusiUrheilu();
+    }
+    
+    @FXML private void handleKeskiarvot() {
+        naytaTilastoja();
     }
     
     
@@ -159,6 +155,14 @@ public class PaivakirjaGUIController implements Initializable{
             //
         }
               
+    }
+    
+    /**
+     * N‰ytt‰‰ keskiarvon tyytyv‰isyydest‰ ja intensiteetist‰
+     */
+    private void naytaTilastoja() {
+        Dialogs.showMessageDialog("Tilastojen mukaan tyytyv‰isyyden keskiarvo on: " + String.format("%2.2f",kayttaja.getKAtyytyvaisyys()) + "\n" +
+                "intensiteetin keskiarvo on: " + String.format("%2.2f",kayttaja.getKAintensiteetti()));
     }
     
     /**

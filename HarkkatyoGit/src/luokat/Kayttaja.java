@@ -303,7 +303,7 @@ public class Kayttaja {
         return poistettiinko;        
     }
    
-    /** Poistetaan valittu utheilu
+    /** Poistetaan valittu urheilu
      * @param urh urheilu joka halutaan poistaa
      * 
      * @example
@@ -316,6 +316,20 @@ public class Kayttaja {
      */ 
     public void poistaUrheilu(Urheilu urh) {
         urheilut.poistaUrheilu(urh);        
+    }
+    
+    /**palauttaa keskiarvon urheilukirjauksien tyytyväisyydestä
+     * @return palauttaa tyytyväisyyden
+     */
+    public double getKAtyytyvaisyys() {
+        return urheilut.getKAtyytyvaisyys();
+    }
+    
+    /**palauttaa keskiarvon urheilukirjauksien intensiteetistä  
+     * @return kaikkien kirjauksien intensiteetin keskiarvon
+     */
+    public double getKAintensiteetti() {
+        return urheilut.getKAintensiteetti();
     }
 }
 

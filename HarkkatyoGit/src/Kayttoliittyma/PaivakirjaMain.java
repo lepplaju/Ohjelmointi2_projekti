@@ -10,7 +10,7 @@ import javafx.fxml.FXMLLoader;
 
 
 /**
- * @author Lepplaju
+ * @author Lepplaju - lepplaju@student.jyu.fi
  * @version 23.4.2021
  *
  */

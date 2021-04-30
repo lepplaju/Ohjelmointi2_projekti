@@ -28,6 +28,7 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#HandleUusiPvm" text="Uusi Päivämäärä" />
                   <MenuItem mnemonicParsing="false" onAction="#HandleUusiUrheilu" text="Uusi Urheilu" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleKeskiarvot" text="Katso keskiarvoja" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">

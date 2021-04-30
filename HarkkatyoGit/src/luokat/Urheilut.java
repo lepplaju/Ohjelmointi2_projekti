@@ -18,6 +18,8 @@ import java.util.List;
  */
 public class Urheilut implements Iterable<Urheilu> {
 
+    private double KAtyytyvaisyys;
+    private double KAintensity;
     private boolean muutettu = false;
     private String tiedostonPerusNimi = "";
     private List<Urheilu> alkiot = new ArrayList<Urheilu>();
@@ -70,13 +72,14 @@ public class Urheilut implements Iterable<Urheilu> {
     public void lisaa(Urheilu urh) {
         alkiot.add(urh);
         muutettu=true;
+        lasketyytyvaisyys();
+        laskeintensity();
     }
 
     /**
      * Palauttaa varakopiotiedoston nimen
      * @return varakopiotiedoston nimi
      */
-
     public String getBakNimi() {
         return tiedostonPerusNimi + ".bak";
     }
@@ -225,7 +228,6 @@ public class Urheilut implements Iterable<Urheilu> {
         lisaa(urh);
     }
 
-
     /**Poistetaan p‰iv‰m‰‰r‰‰n liittyv‰t urheilut
      * @param pvmId - mink‰ p‰iv‰m‰‰r‰n kaikki merkinn‰t halutaan poista
      * @return kuinka monta urheilua poistettiin
@@ -243,7 +245,6 @@ public class Urheilut implements Iterable<Urheilu> {
         return n;
     }
 
-
     /**Poistetaan yksitt‰inen urheilu
      * @param urh kirjaus, joka halutaan poistaa
      * @return true jos poistettiin
@@ -254,5 +255,44 @@ public class Urheilut implements Iterable<Urheilu> {
         return ret;
     }
 
+    /**palauttaa apumuuttujan, jossa on tyytyv‰isyyden keskiarvo kaikista 
+     * urheilu-kirjauksista
+     * @return tyytyv‰isyyden keskiarvon
+     */
+    public double getKAtyytyvaisyys() {
+        return KAtyytyvaisyys;
+    }
+    
+
+    /**palauttaa apumuuttujan, jossa on intensiteetin keskiarvo
+     * @return intensityn keskiarvo
+     */
+    public double getKAintensiteetti() {
+        return KAintensity;
+    }
+    
+    /**
+     * Laskee tyytyv‰isyyden KAtyytyv‰isyys-muuttujaan
+     */
+    public void lasketyytyvaisyys() {
+        double KA=0;
+        for (Iterator<Urheilu> it = alkiot.iterator(); it.hasNext();) {
+            Urheilu urh = it.next();
+            KA+=urh.getTyytyvaisyys();
+        }
+        KAtyytyvaisyys = KA/alkiot.size();
+    }
+
+    /**
+     * Laskee intensiteetin KAintensity muuttujaan
+     */
+    public void laskeintensity() {
+        double KA=0;
+        for (Iterator<Urheilu> it = alkiot.iterator(); it.hasNext();) {
+            Urheilu urh = it.next();
+            KA+=urh.getIntensity();
+        }
+        KAintensity = KA/alkiot.size();
+    }
     
 }
