@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import fi.jyu.mit.fxgui.Dialogs;
+
 /**Luokka kertoo kuka ohjelmaa k‰ytt‰‰
  * @author Lepplaju
  * @version 27.4.2021
@@ -165,10 +167,11 @@ public class Kayttaja {
     
     /**
      * Asettaa tiedostojen perusnimet
+     * Jos ei ole olemassa annetun nimen tiedostokansiota, luodaan uusi kansio
      * @param nimi uusi nimi
      */
     public void setTiedosto(String nimi) {
-        File dir = new File(nimi);
+        File dir = new File(nimi);               
         dir.mkdirs();
         String hakemistonNimi = "";
         if ( !nimi.isEmpty() ) hakemistonNimi = nimi +"/";

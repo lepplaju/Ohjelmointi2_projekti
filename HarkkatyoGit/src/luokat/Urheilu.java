@@ -215,9 +215,9 @@ public class Urheilu implements Cloneable{
             return null;
         case 3:
             int tunnit = Mjonot.erota(sb,':', -1);
-            if (tunnit<0 || tunnit>24) return "tarkista kellonajan oikeellisuus";
+            if ( tunnit>24) return "tarkista kellonajan oikeellisuus";
             int minuutit = Mjonot.erotaInt(sb, 0);
-            if (minuutit<0||minuutit>59) return "tarkista kellonajan oikeellisuus";
+            if (minuutit>59) return "tarkista kellonajan oikeellisuus";
             klo = st;
             return null;
         case 4:

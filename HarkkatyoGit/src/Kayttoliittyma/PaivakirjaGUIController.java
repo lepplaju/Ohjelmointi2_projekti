@@ -19,6 +19,7 @@ import luokat.Pvm;
 import luokat.SailoException;
 import luokat.Urheilu;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -210,9 +211,20 @@ public class PaivakirjaGUIController implements Initializable{
         kayttajannimi = nimi;
         setTitle("P‰iv‰kirja: K‰ytt‰j‰ - " + kayttajannimi);
         try {
+            //tarkistaa onko olemassa t‰m‰n nimist‰ k‰ytt‰j‰‰ ja jos ei, niin kysyt‰‰n halutaanko lis‰t‰ uusi k‰ytt‰j‰
+            File tiedostonimi = new File(kayttajannimi);
+            System.out.println(tiedostonimi.exists());
+            if (tiedostonimi.exists() == false) {
+                boolean vastaus = Dialogs.showQuestionDialog("Uusi k‰ytt‰j‰", "Luo uusi k‰ytt‰j‰ nimell‰: " + kayttajannimi + "?", "Kyll‰", "Ei, Sulje");
+                if (vastaus==false) {
+                    Platform.exit();
+                    return null;
+                }
+                } 
             kayttaja.lueTiedostosta(nimi);
             hae(0);
             return null;
+            
         } catch (SailoException e) {
             hae(0);
             String virhe = e.getMessage(); 
@@ -227,7 +239,7 @@ public class PaivakirjaGUIController implements Initializable{
      */
     public boolean avaa() {
         String uusinimi = KayttajanNimiController.kysyNimi(null, kayttajannimi);
-        if (uusinimi == null) return false;
+
         lueTiedosto(uusinimi);
         return true;
     }

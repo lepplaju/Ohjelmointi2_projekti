@@ -142,7 +142,7 @@ public class Pvm implements Cloneable, Comparable<Pvm> {
         return uusi;
     }
     
-    /** Asettaa p‰iv‰m‰‰r‰n kun muokataan jo olemassa olevaa
+    /** Asettaa p‰iv‰m‰‰r‰n kun muokataan jo olemassa olevaa tarkistaa p‰iv‰m‰‰r‰n oikeellisuuden
      * @param tekstikentta mit‰ tekstikentt‰‰n on syˆtetty
      * @return tyhj‰n jos ei ongelmia
      */
@@ -151,7 +151,7 @@ public class Pvm implements Cloneable, Comparable<Pvm> {
         this.pv = Mjonot.erota(sb, '.',pv);
         this.kk = Mjonot.erota(sb, '.',kk);
         this.vv = Mjonot.erota(sb, '.',vv);
-        if(kk<1||kk>12 || pv>31|| pv<1 ||vv<1 || vv>2021) return "tarkista kent‰n oikeellisuus"; 
+        if(kk<1||kk>12 || pv>31|| pv<1 ||vv<2000 || vv>2050) return "tarkista kent‰n oikeellisuus"; 
         return null;
     }
     

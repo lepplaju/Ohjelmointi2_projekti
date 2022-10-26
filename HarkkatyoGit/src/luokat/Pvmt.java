@@ -154,7 +154,7 @@ public class Pvmt implements Iterable<Pvm>{
             }
             muutettu = false;
         } catch ( FileNotFoundException e ) {
-            throw new SailoException("Tiedosto " + getTiedostonNimi() + " ei aukea");
+            throw new SailoException("Tiedosto " + getTiedostonNimi() + " ei aukea tai uusi käyttäjä luotiin");
         } catch ( IOException e ) {
             throw new SailoException("Ongelmia tiedoston kanssa: " + e.getMessage());
         }
