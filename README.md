@@ -1,9 +1,3 @@
-# pohja
-
-Pohja kevään 2021 harjoitustöiden GIT-repoille
-
-Lue käyttöohjeet TIMistä: <https://tim.jyu.fi/view/kurssit/tie/ohj2/tyokalut/git/ohj2git#fork>
-
-Käyttöliittymä on sovellus, joka on päiväkirja.
-Päiväkirjaan voi lisätä vakiona urheilusuorituksia ja päivän ravintoarvoja.
+Keväällä 2021 tehty Ohjelmointi 2 kurssia varten tehty harjoitustyö. 
+Sovellus on urheilupäiväkirja, johon voi lisätä käyttäjiä ja käyttäjien sisällä päivämäärään sidonnaisia urheilukirjauksia.
 
